@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="sincity">
-    <output-path>$PROJECT_DIR$/out/artifacts/sincity</output-path>
-    <root id="archive" name="sincity.war" />
-  </artifact>
-</component>
