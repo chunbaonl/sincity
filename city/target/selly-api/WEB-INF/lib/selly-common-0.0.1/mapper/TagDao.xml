@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.TagDao">
+
+    <!-- Queries: -->
+    <insert id="addNewTag">
+        INSERT INTO tags (id, name) VALUES (#{mId}, #{mName})
+    </insert>
+
+    <delete id="deleteTag">
+        DELETE from tags WHERE id = #{tagId}
+    </delete>
+
+    <select id="getById" parameterType="String" resultType="Tag" resultMap="TagResult">
+        SELECT * FROM tags WHERE id = #{tagId}
+    </select>
+
+    <select id="findTagByText" parameterType="String" resultType="Tag" resultMap="TagResult">
+        SELECT * FROM tags WHERE name = #{tag} GROUP BY name
+    </select>
+
+    <select id="getSimilarTags" parameterType="String" resultType="Tag" resultMap="TagResult">
+        SELECT * FROM tags WHERE LOWER(name) LIKE LOWER(#{tag})
+    </select>
+
+    <select id="findTagsByText" resultType="Tag" resultMap="TagResult">
+        SELECT * FROM tags
+        JOIN tagstore ON tagstore.tagId = tags.id
+        JOIN store ON store.id = tagstore.storeId
+        WHERE store.shoppingmallId =  #{shoppingmallId}
+        AND store.active = 1
+        <if test="exactSearch">
+          AND tags.name = #{tagText}
+        </if>
+        <if test="!exactSearch">
+          AND tags.name LIKE #{tagText}
+        </if>
+        GROUP BY tags.name
+        LIMIT #{offset},#{maxHits}
+    </select>
+
+    <!-- Result maps -->
+
+    <resultMap type="Tag" id="TagResult">
+        <result property="mName" column="name"/>
+        <result property="mId" column="id"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0062)http://selly-statistics-v2.s3-website-eu-west-1.amazonaws.com/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Untitled Form</title>
+<link rel="stylesheet" type="text/css" href="./test_files/view.css" media="all">
+<link rel="stylesheet" type="text/css" href="./test_files/jquery-ui.min.css" media="all">
+<script type="text/javascript" src="./test_files/view.js"></script>
+<script type="text/javascript" src="./test_files/calendar.js"></script>
+<script type="text/javascript" src="./test_files/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="./test_files/jquery-ui.min.js"></script>
+</head>
+<body id="main_body" class="no_guidelines safari">
+	
+	<img id="top" src="./test_files/top.png" alt="">
+	<div id="form_container">
+		
+		<h1><a>CBRE Report Version 2</a></h1>
+		<form id="form_1054613" class="appnitro" method="get">
+			<div class="form_description">
+				<h2>CBRE Report Version 2</h2>
+			</div>						
+			
+			<table width="100%" border="1">
+  <col align="left" />
+  <col align="left" />
+  <tr>
+    <td>
+    	<ul>
+				<li id="li_3" class="">
+					<label class="description" for="element_3">Select a location</label>
+					<div>
+						<select class="element select medium" id="element_3" name="shoppingmallId"> 
+							<option value="CBA9C0D3-6BE0-11E4-84B10638FDEA09E5">Amsterdamse Poort</option>
+							<option value="CBE7E9D3-6BE0-98AF-84B10638FD4FE56E">Elzas Passage</option>
+							<option value="37746B1B-48B8-11E3-BF7200505682612A">Selly Amsterdam</option>
+						</select>
+					</div>
+				</li>
+				<li id="li_1">
+					<label class="description" for="element_1">Select a start date </label>
+					<span>
+						<input id="element_1_1" name="startMonth" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_1_1">MM</label>
+					</span>
+					<span>
+						<input id="element_1_2" name="startDay" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_1_2">DD</label>
+					</span>
+					<span>
+				 		<input id="element_1_3" name="startYear" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_1_3">YYYY</label>
+					</span>
+					<span id="calendar_1">
+						<img id="cal_img_1" class="datepicker" src="./test_files/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+						inputField	 : "element_1_3",
+						baseField    : "element_1",
+						displayArea  : "calendar_1",
+						button		 : "cal_img_1",
+						ifFormat	 : "%B %e, %Y",
+						onSelect	 : selectDate
+						});
+					</script>
+				</li>
+				<li id="li_2">
+					<label class="description" for="element_2">Select an end date </label>
+					<span>
+						<input id="element_2_1" name="endMonth" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_2_1">MM</label>
+					</span>
+					<span>
+						<input id="element_2_2" name="endDay" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_2_2">DD</label>
+					</span>
+					<span>
+				 		<input id="element_2_3" name="endYear" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_2_3">YYYY</label>
+					</span>
+				
+					<span id="calendar_2">
+						<img id="cal_img_2" class="datepicker" src="./test_files/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+						inputField	 : "element_2_3",
+						baseField    : "element_2",
+						displayArea  : "calendar_2",
+						button		 : "cal_img_2",
+						ifFormat	 : "%B %e, %Y",
+						onSelect	 : selectDate
+						});
+					</script>
+				</li>		
+				<li id="li_4">
+					<label class="description" for="element_4">Comparison start </label>
+					<span>
+						<input id="element_4_1" name="startMonthComp" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_4_1">MM</label>
+					</span>
+					<span>
+						<input id="element_4_2" name="startDayComp" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_4_2">DD</label>
+					</span>
+					<span>
+				 		<input id="element_4_3" name="startYearComp" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_4_3">YYYY</label>
+					</span>
+				
+					<span id="calendar_4">
+						<img id="cal_img_4" class="datepicker" src="./test_files/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+						inputField	 : "element_4_3",
+						baseField    : "element_4",
+						displayArea  : "calendar_4",
+						button		 : "cal_img_4",
+						ifFormat	 : "%B %e, %Y",
+						onSelect	 : selectDate
+						});
+					</script>
+				</li>
+				<li id="li_5">
+					<label class="description" for="element_5">Comparison end </label>
+					<span>
+						<input id="element_5_1" name="endMonthComp" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_5_1">MM</label>
+					</span>
+					<span>
+						<input id="element_5_2" name="endDayComp" class="element text" size="2" maxlength="2" value="" type="text"> /
+						<label for="element_5_2">DD</label>
+					</span>
+					<span>
+				 		<input id="element_5_3" name="endYearComp" class="element text" size="4" maxlength="4" value="" type="text">
+						<label for="element_5_3">YYYY</label>
+					</span>
+				
+					<span id="calendar_5">
+						<img id="cal_img_5" class="datepicker" src="./test_files/calendar.gif" alt="Pick a date.">	
+					</span>
+					<script type="text/javascript">
+						Calendar.setup({
+						inputField	 : "element_5_3",
+						baseField    : "element_5",
+						displayArea  : "calendar_5",
+						button		 : "cal_img_5",
+						ifFormat	 : "%B %e, %Y",
+						onSelect	 : selectDate
+						});
+					</script>
+				</li>
+				<li class="buttons">
+					<input type="hidden" name="form_id" value="1054613">
+					<input id="saveForm" class="button_text" type="submit" name="submit" value="Create">
+				</li>
+			</ul>
+    </td>
+    <td>
+    		<ul>
+				<li class="buttons">					
+					<span>
+				 		l<label>less than</label>
+				 		<input id="maxSum" class="element text" size="4" maxlength="4" value="20" type="text">
+					</span>
+					<input type="button" id="showList" class="button_text" value="Show file's">
+				</li>
+				<li>
+					<div id="fileListDiv">
+					</div>
+				</li>				
+			</ul>
+    </td>
+  </tr>
+</table>
+		</form>	
+		<div id="footer">
+		</div>
+		<script type="text/javascript">
+			var url = "http://192.168.1.64:8080/s/statistics/";
+
+			$("#form_1054613" ).submit(function( event ) {
+				event.preventDefault();
+
+				var sm = $("#element_1_1").val() === "" ? "00" : $("#element_1_1").val();
+				var sd = $("#element_1_2").val() === "" ? "00" : $("#element_1_2").val();
+				var sy = $("#element_1_3").val() === "" ? "0000" : $("#element_1_3").val();
+				var em = $("#element_2_1").val() === "" ? "00" : $("#element_2_1").val();
+				var ed = $("#element_2_2").val() === "" ? "00" : $("#element_2_2").val();
+				var ey = $("#element_2_3").val() === "" ? "0000" : $("#element_2_3").val();
+
+				var csm = $("#element_4_1").val() === "" ? "00" : $("#element_4_1").val();
+				var csd = $("#element_4_2").val() === "" ? "00" : $("#element_4_2").val();
+				var csy = $("#element_4_3").val() === "" ? "0000" : $("#element_4_3").val();
+				var cem = $("#element_5_1").val() === "" ? "00" : $("#element_5_1").val();
+				var ced = $("#element_5_2").val() === "" ? "00" : $("#element_5_2").val();
+				var cey = $("#element_5_3").val() === "" ? "0000" : $("#element_5_3").val();
+
+				var mallid = $('#element_3').val();
+
+				var params = "?shoppingmallId="+mallid+"&startMonth="+sm+"&startDay="+sd+"&startYear="+sy+"&endMonth="+em+"&endDay="+ed+"&endYear="+ey+
+				"&startMonthComp="+csm+"&startDayComp="+csd+"&startYearComp="+csy+"&endMonthComp="+cem+"&endDayComp="+ced+"&endYearComp="+cey;
+
+				var url2 = url+"reportV2/";
+
+				$("body").addClass("loading");
+				$.ajax({
+					url:url2+params,
+			     	type: "GET",
+    				crossDomain: true,
+    				dataType: 'jsonp',
+    				jsonpCallback: "localJsonpCallbackA"
+    			});
+    		});
+    		
+    		function localJsonpCallbackA(json){
+    		 		if(json.Error){
+			     		alert("Error generating report="+json.Error);
+    				}
+    				else{
+    					alert(eval(json).message);
+    				}
+    		 }
+
+    		 $("#showList" ).click(function(){
+    		 		var mallid = $('#element_3').val();
+    		 		var url2 = url+"reports/show/";
+    		 		var maxSum = $('#maxSum').val();
+    		 		var params = "?shoppingmallId="+mallid+"&maxSum="+maxSum;
+					$.ajax({
+						url:url2+params,
+			     		type: "GET",
+    					crossDomain: true,
+    					dataType: 'jsonp',
+    					jsonpCallback: "localJsonpCallbackB"
+    				});
+    		 });
+
+    		 function localJsonpCallbackB(json){
+    		 		if(json.Error){
+			     		alert("Error generating report="+json.Error);
+    				}
+    				else{
+    					var names = eval(json);
+    					var links="";
+    					if(names.length<=0){
+    						alert("First create file and wait a few moments.");
+    					}
+    					for(var i=0; i<names.length; i++){
+    						links=links+"<a href='"+names[i].link+"'>"+names[i].name+"</a><br>";
+             			}
+             			$("#fileListDiv").html(links);
+    				}
+    		 }
+		</script>
+	</div>
+</body></html>

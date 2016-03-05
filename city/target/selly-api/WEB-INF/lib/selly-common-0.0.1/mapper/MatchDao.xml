@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.MatchDao">
+
+    <insert id="storeMatch" keyColumn="id">
+        INSERT INTO matchrequest (
+            id,
+            fullDescription,
+            image,
+            thumb,
+            dateCreated,
+            dateModified,
+            userCreated,
+            source,
+            target_location,
+            platform_created
+        )
+        VALUES (
+            #{match.mId},
+            #{match.mFullDescription},
+            #{match.mImagePath},
+            #{match.mThumbPath},
+            #{match.mDateCreated},
+            #{match.mDateModified},
+            #{match.mUserCreated.id},
+            #{match.mSource.value},
+            #{match.mTargetLocationId},
+            #{platformCreated}
+        )
+    </insert>
+
+    <insert id="storeMatchResult" keyColumn="id" parameterType="Match">
+        INSERT INTO matchrequest_stores (match_request_id, store_id, matched_tag_count)
+        VALUES
+        (#{requestId}, #{storeId}, #{matchedTagCount} )
+    </insert>
+
+    <insert id="setStoreResponded" parameterType="string">
+        INSERT INTO matchrequest_responses
+        (match_id, store_id, date_created)
+        SELECT
+        #{matchId}, #{storeId}, #{date}
+        FROM (SELECT 1) t
+        WHERE NOT EXISTS (SELECT 1 from matchrequest_responses WHERE match_id = #{matchId} AND store_id = #{storeId})
+    </insert>
+
+    <select id="getStoresResponded" parameterType="string" resultType="string">
+        SELECT store_id FROM matchrequest_responses
+        WHERE match_id = #{matchId}
+    </select>
+
+    <insert id="storeMatchTag" keyColumn="id" parameterType="Match">
+        <if test="match.id != null and tag.id != null">
+            INSERT INTO matchrequest_tags
+            (matchrequestId, tagId)
+            SELECT
+            #{match.id}, #{tag.id}
+            FROM (SELECT 1) t
+            WHERE NOT EXISTS (SELECT 1 FROM matchrequest_tags WHERE matchrequestId = #{match.id} AND tagId = #{tag.id})
+        </if>
+    </insert>
+
+    <select id="getMatch" resultType="Match" resultMap="MatchResultMap">
+        SELECT * FROM matchrequest
+        WHERE
+        id = #{matchId}
+    </select>
+
+    <select id="getMatchOwner" resultType="string" parameterType="string">
+        SELECT userCreated FROM matchrequest
+        WHERE
+        id = #{matchId}
+    </select>
+
+    <select id="getCountForMatch" resultType="integer">
+        SELECT COUNT(1) FROM matchrequest_stores JOIN store ON matchrequest_stores.store_id = store.id
+        WHERE
+        matchrequest_stores.match_request_id = #{matchId} AND store.active = '1'
+    </select>
+
+    <select id="getStoresForMatch" resultType="string">
+        SELECT store_id FROM matchrequest_stores JOIN store ON matchrequest_stores.store_id = store.id
+        WHERE
+        matchrequest_stores.match_request_id = #{matchId} AND store.active = '1'
+    </select>
+
+    <select id="getMatchesForUser" resultType="Match" resultMap="MatchResultMap">
+        SELECT matchrequest.* FROM matchrequest
+        JOIN matchrequest_stores ON matchrequest.id = matchrequest_stores.match_request_id
+        JOIN store ON store.id = matchrequest_stores.store_id
+        WHERE usercreated = #{userId}
+        AND store.active = '1'
+        ORDER BY dateCreated DESC
+    </select>
+
+    <select id="getMatchRequestsForLocation" resultType="Match" resultMap="MatchResultMap">
+        SELECT * FROM matchrequest
+        WHERE matchrequest.target_location = #{locationId}
+        <if test="since!=null">
+            AND dateCreated &gt; #{since}
+        </if>
+        <if test="until!=null">
+            AND dateCreated &lt; #{until}
+        </if>
+        ORDER BY dateCreated DESC
+    </select>
+
+    <select id="getMatchesForUserPerLocation" resultType="Match" resultMap="MatchResultMap">
+        SELECT matchrequest.* FROM matchrequest
+        JOIN matchrequest_stores ON matchrequest.id = matchrequest_stores.match_request_id
+        JOIN store ON store.id = matchrequest_stores.store_id
+        WHERE usercreated = #{userId}
+        AND store.active = '1'
+        AND matchrequest.target_location = #{locationId}
+        ORDER BY dateCreated DESC
+    </select>
+
+    <select id="getMatchesForStore" resultType="Match" resultMap="MatchResultMap">
+        SELECT *, dateCreated as created, matchrequest_stores.store_id AS store_id,
+        matchrequest_stores.matched_tag_count AS match_count, matchrequest_stores.read_date AS read_date
+        FROM matchrequest
+        JOIN matchrequest_stores
+        ON matchrequest.id = matchrequest_stores.match_request_id
+        WHERE matchrequest_stores.store_id = #{storeId}
+        GROUP BY matchrequest.id
+        ORDER BY created DESC
+        <if test="offset!=null">
+            <if test="maxItems!=null">
+                LIMIT #{offset}, #{maxItems}
+            </if>
+        </if>
+    </select>
+
+    <select id="getUnnotifiedMatches" resultType="Match" resultMap="MatchResultMap">
+        SELECT *, dateCreated as created FROM matchrequest JOIN matchrequest_stores ON matchrequest.id = matchrequest_stores.match_request_id
+        WHERE matchrequest_stores.date_notification_email IS NULL AND matchrequest.dateCreated  &gt; #{from}
+        GROUP BY matchrequest.id
+        ORDER BY created DESC
+    </select>
+
+    <select id="getUnnotifiedToStoreMatch" resultType="MatchRequestPairing" resultMap="MatchRequestPairingMap">
+        select
+        matchrequest.id matchId,
+        match_store.store_id storeId,
+        store.ownerUserId storeOwnerId,
+        store.name storeName,
+        users.id userId,
+        users.firstName userFirstName,
+        users.lastName userLastName,
+        match_store.date_notification_email dateNotified,
+        matchrequest.dateCreated dateCreated,
+        sum(match_store.matched_tag_count) matchedTagCount
+        from matchrequest
+        inner join matchrequest_stores match_store ON matchrequest.id = match_store.match_request_id
+        inner join store on store.id=match_store.store_id
+        inner join users on matchrequest.usercreated=users.id
+        where
+        match_store.date_notification_email is NULL
+        AND (matchrequest.dateCreated <![CDATA[ > ]]> (NOW() - INTERVAL #{maxHoursOld} HOUR))
+        group by matchId, match_store.store_id, storeOwnerId,storeName, userId, userFirstName,userLastName,dateNotified,dateCreated
+        order by matchedTagCount desc;
+    </select>
+
+    <select id="getUnnotifiedToCostumerMatch" resultType="MatchRequestPairing" resultMap="MatchRequestPairingMap">
+        select
+        matchrequest_responses.match_id matchId,
+        matchrequest_responses.store_id storeId,
+        store.ownerUserId storeOwnerId,
+        store.name storeName,
+        users.id userId,
+        users.firstName userFirstName,
+        users.lastName userLastName,
+        matchrequest_responses.date_notification_email dateNotified,
+        matchrequest_responses.date_created dateCreated,
+        sum(match_store.matched_tag_count) matchedTagCount
+        from matchrequest
+        inner join matchrequest_responses ON matchrequest.id = matchrequest_responses.match_id
+        inner join store on store.id=matchrequest_responses.store_id
+        inner join users on matchrequest.usercreated=users.id
+        inner join matchrequest_stores match_store ON matchrequest.id = match_store.match_request_id
+        where
+        matchrequest_responses.date_notification_email is NULL
+        AND (matchrequest_responses.date_created <![CDATA[ > ]]> (NOW() - INTERVAL #{maxHoursOld} HOUR))
+        group by matchId, matchrequest_responses.store_id, storeOwnerId,storeName, userId, userFirstName,userLastName,dateNotified,dateCreated
+        order by matchedTagCount desc
+    </select>
+
+    <update id="setMatchNotified">
+        UPDATE matchrequest_stores
+        SET date_notification_email = NOW()
+        WHERE match_request_id = #{requestId}
+          AND store_id = #{storeId}
+          AND date_notification_email IS NULL
+    </update>
+
+    <!-- Returns a Collection<String> of matchresponse.id younger than "maxHoursOld" -->
+    <select id="getRecentMatchIds" resultType="string">
+        SELECT id FROM matchrequest
+        WHERE dateCreated &gt; NOW() - INTERVAL #{maxHoursOld} HOUR
+        ORDER BY dateCreated DESC
+    </select>
+
+
+    <!-- Queries for SEL-1015: send e-mail to user when a store responds -->
+
+    <select id="countRecentNonNotifiedMatchRequests" resultType="int">
+        SELECT COUNT(match_id) FROM matchrequest_responses
+        WHERE date_notification_email IS NULL
+        AND  (date_created &gt; NOW() - INTERVAL #{maxHoursOld} HOUR)
+    </select>
+
+    <select id="getMatchPairings" resultType="MatchRequestPairing" resultMap="MatchRequestPairingMap">
+          SELECT
+          matchrequest_stores.match_request_id AS matchId,
+          matchrequest_responses.date_created AS dateCreated,
+          store.name AS storeName,
+          store.ownerUserId AS storeOwnerId
+          FROM matchrequest_stores
+          LEFT JOIN store ON matchrequest_stores.store_id = store.id
+          LEFT JOIN matchrequest_responses ON matchrequest_responses.match_id = matchrequest_stores.match_request_id
+          AND matchrequest_responses.store_id = matchrequest_stores.store_id
+          WHERE matchrequest_stores.match_request_id = #{matchId}
+    </select>
+
+    <select id="getRecentNonNotifiedMatchResponses" resultType="MatchRequestPairing" resultMap="MatchRequestPairingMap">
+        SELECT matchrequest_responses.match_id AS matchId,
+        matchrequest_responses.store_id AS storeId,
+        matchrequest_responses.date_created AS dateCreated,
+        matchrequest_responses.date_notification_email AS dateNotified
+        FROM matchrequest_responses
+        WHERE (date_notification_email IS NULL)
+        AND (date_created &gt; (NOW() - INTERVAL #{maxHoursOld} HOUR))
+    </select>
+
+    <update id="markMatchRequestNotified" parameterType="MatchRequestPairing">
+        UPDATE matchrequest_responses
+        SET date_notification_email = NOW()
+        WHERE match_id = #{matchId} and store_id = #{storeId}
+    </update>
+
+    <update id="markReadedMatch" parameterType="MatchRequestPairing">
+        UPDATE matchrequest_stores
+        SET read_date = NOW()
+        WHERE match_request_id = #{matchId} and store_id = #{storeId}
+    </update>
+
+    <!-- Result maps: -->
+
+    <resultMap type="Match" id="MatchResultMap">
+
+        <!-- match itself -->
+        <constructor>
+            <idArg javaType="string" column="id"/>
+        </constructor>
+        <result property="mFullDescription" column="fullDescription"/>
+        <result property="mImagePath" column="image"/>
+        <result property="mThumbPath" column="thumb"/>
+        <result property="mDateCreated" column="dateCreated"/>
+        <result property="mDateModified" column="dateModified"/>
+        <result property="mDateNotified" column="date_notification_email"/>
+        <result property="mSource" column="source"
+                typeHandler="eu.greenhouseinnovation.selly.common.mybatis.handlers.MatchSourceTypeHandler"/>
+        <result property="mMatchCount" column="match_count"/>
+
+        <!-- nested objects -->
+        <association property="mUserCreated" column="userCreated" javaType="User"
+                     select="eu.greenhouseinnovation.selly.common.model.dao.UserDao.getById"/>
+        <association property="mLocation" column="target_location" javaType="Location"
+                     select="eu.greenhouseinnovation.selly.common.model.dao.LocationDao.getById"/>
+
+        <!-- stores the match has been paired to -->
+        <collection property="mMatchRequestPairing" javaType="List" ofType="MatchRequestPairing">
+            <result property="matchId" column="id"/>
+            <result property="storeId" column="store_id"/>
+            <result property="storeOwnerId" column="store_owner_id"/>
+            <result property="storeName" column="store_name"/>
+            <result property="dateReaded" column="read_date"/>
+        </collection>
+    </resultMap>
+
+    <resultMap type="MatchRequestPairing" id="MatchRequestPairingMap">
+        <result property="matchId" column="matchId"/>
+        <result property="storeId" column="storeId"/>
+        <result property="storeOwnerId" column="storeOwnerId"/>
+        <result property="storeName" column="storeName"/>
+        <result property="userId" column="userId"/>
+        <result property="userFirstName" column="userFirstName"/>
+        <result property="userLastName" column="userLastName"/>
+        <result property="matchedTagCount" column="matchedTagCount"/>
+        <result property="dateNotified" column="dateNotified"/>
+        <result property="dateCreated" column="dateCreated"/>
+        <collection property="tags" column="matchId" javaType="List" ofType="Tag"
+                    select="selectTags"/>
+    </resultMap>
+    <select id="selectTags" resultType="eu.greenhouseinnovation.selly.common.model.Tag">
+        SELECT tags.id, tags.name
+        FROM tags
+        inner join matchrequest_tags on matchrequest_tags.tagId = tags.id
+        WHERE matchrequest_tags.matchRequestId = #{id}
+    </select>
+</mapper>

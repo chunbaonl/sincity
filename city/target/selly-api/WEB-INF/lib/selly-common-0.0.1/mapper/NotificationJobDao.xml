@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.NotificationJobDao">
+
+    <insert id="createJob" parameterType="NotificationJob">
+        INSERT INTO jobs_notifications
+        (
+            id, job_type,
+            job_status, job_status_reason,
+            date_delay_until,
+            data_model
+        )
+        VALUES
+        (
+            #{mId}, #{mJobType.name},
+            #{mJobStatus.value}, #{mJobStatusReason},
+            #{mDateDelayUntil},
+            #{mDataModel}
+        )
+    </insert>
+
+    <select id="getJobById" resultMap="NotificationJobResult">
+        SELECT *
+        FROM jobs_notifications
+        WHERE id = #{id}
+    </select>
+
+    <select id="getPendingJobsByType" resultMap="NotificationJobResult">
+        SELECT *
+        FROM jobs_notifications
+        WHERE job_type = #{jobType.name}
+            AND job_status = 0
+            AND (date_delay_until is null OR date_delay_until &lt; NOW())
+        ORDER BY date_created ASC
+    </select>
+
+    <delete id="deleteJobById">
+        DELETE FROM jobs_notifications
+        WHERE id = #{id}
+    </delete>
+
+    <!-- date_modified has an "on update CURRENT_TIMESTAMP" so no need to supply it -->
+    <update id="updateJobStatus" parameterType="NotificationJob">
+        UPDATE jobs_notifications
+        <set>
+            job_status = #{jobStatus.value},
+            <if test="jobStatusReason != null">job_status_reason = #{jobStatusReason}</if>
+            <if test="jobStatusReason == null">job_status_reason = #{jobStatus.name}</if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+
+    <resultMap type="NotificationJob" id="NotificationJobResult">
+
+        <id property="mId" column="id"/>
+        <result property="mJobType" column="job_type"/>
+        <result property="mJobStatus" column="job_status"
+                typeHandler="eu.greenhouseinnovation.selly.common.mybatis.handlers.JobStatusHandler"/>
+        <result property="mJobStatusReason" column="job_status_reason"/>
+
+        <result property="mDateCreated" column="date_created"/>
+        <result property="mDateModified" column="date_modified"/>
+        <result property="mDateDelayUntil" column="date_delay_until"/>
+
+        <result property="mDataModel" column="data_model"/>
+
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.StoreDao">
+
+    <!-- Queries: -->
+
+    <insert id="storeStore" parameterType="Store">
+        INSERT INTO store (
+            id,
+            ownerUserId,
+            name,
+            description,
+            translatedDescription,
+            telephone,
+            fax,
+            email,
+            website,
+            storeurl,
+            active,
+            hashtag,
+            address,
+            postalcode,
+            city,
+            latitude,
+            longitude,
+            shoppingmallId,
+            floor,
+            number,
+            coords,
+            shape,
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday,
+            sunday,
+            specialday,
+            s3backgroundImageWeb,
+            s3backgroundImageMobile,
+            s3picture,
+            s3thumb
+        ) VALUES (
+            #{store.mId},
+            #{store.mOwnerUserId},
+            #{store.mName},
+            #{store.mDescription},
+            #{store.mTranslatedDescription},
+            #{store.mPhoneNumber},
+            #{store.mFaxNumber},
+            #{store.mEmail},
+            #{store.mWebsiteUrl},
+            #{store.mStoreUrl},
+            #{store.mIsActive},
+            #{store.mHashtag},
+            #{store.mAddress},
+            #{store.mPostalCode},
+            #{store.mCity},
+            #{store.mLatitude},
+            #{store.mLongitude},
+            #{store.mLocation.id},
+            #{store.mFloor},
+            #{store.mMapNumber},
+            #{store.mMapCoordinates},
+            #{store.mMapShape},
+            #{store.mOpeningHours.monday},
+            #{store.mOpeningHours.tuesday},
+            #{store.mOpeningHours.wednesday},
+            #{store.mOpeningHours.thursday},
+            #{store.mOpeningHours.friday},
+            #{store.mOpeningHours.saturday},
+            #{store.mOpeningHours.sunday},
+            #{store.mOpeningHours.specialDay},
+            #{store.mBackgroundWebImage},
+            #{store.mBackgroundMobileImage},
+            #{store.mImagePath},
+            #{store.mThumbPath}
+        )
+    </insert>
+
+    <insert id="mapStoreToUser">
+        INSERT INTO userstores (userId, storeId) VALUES (#{userId}, #{storeId})
+    </insert>
+
+    <select id="getById" parameterType="string" resultMap="StoreResult">
+        SELECT
+        store.*, shoppingmall.name AS shoppingMallName
+        FROM store
+        INNER JOIN shoppingmall ON shoppingmall.id = store.shoppingmallId
+        WHERE store.id = #{storeId}
+    </select>
+
+    <!-- Java layer MUST wrap the unit id in '%' chars so that the LIKE can search within the CSV field -->
+    <select id="getStoreByUnit" parameterType="string" resultMap="StoreResult">
+        SELECT *
+        FROM store
+        WHERE number LIKE #{unitId}
+    </select>
+
+    <!-- delete a store by its GUID -->
+    <!--<delete id="deleteStore" parameterType="String">
+        DELETE from store
+        WHERE id = #{storeId}
+    </delete>-->
+
+    <!-- Get a listing of all active Stores regardless of Location -->
+    <select id="getAllStores" resultType="Store" resultMap="StoreResult">
+        SELECT
+        store.*, shoppingmall.name AS shoppingMallName
+        FROM store
+        INNER JOIN shoppingmall ON shoppingmall.id = store.shoppingmallId
+        where store.active = '1'
+        ORDER BY name ASC
+    </select>
+
+    <select id="getStoresForLocation" parameterType="string" resultType="Store" resultMap="StoreResult">
+        SELECT
+        store.*, shoppingmall.name AS shoppingMallName
+        FROM store
+        INNER JOIN shoppingmall ON shoppingmall.id = store.shoppingmallId
+        where store.shoppingmallId = #{locationId} AND store.active = '1'
+        ORDER BY name ASC
+    </select>
+
+    <!-- Returns a list of stores based on searchid and filtered by searchTerm -->
+    <select id="getStoresBySearchInLocation" parameterType="string" resultType="Store" resultMap="StoreResult">
+        SELECT st.*, sh.name AS shoppingMallName
+          FROM store st 
+    INNER JOIN shoppingmall sh ON sh.id = st.shoppingmallId
+         WHERE st.shoppingmallId = #{locationId} 
+           AND st.active = 1
+           AND (st.`name` LIKE #{searchTerm} || st.`description` LIKE #{searchTerm} || st.`translatedDescription` LIKE #{searchTerm})
+      ORDER BY st.`name` ASC;
+    </select>
+
+
+    <!-- Returns a count of the number of times a Store responded to a particular MatchRequest -->
+    <select id="numberOfResponsesToMatch" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM matchrequest_responses
+        WHERE store_id = #{storeId} AND match_id = #{matchId}
+    </select>
+
+    <select id="getStoresForUser" parameterType="string" resultType="Store" resultMap="StoreResult">
+        SELECT
+          store.*, shoppingmall.name AS shoppingMallName
+        FROM store
+          INNER JOIN userstores ON store.id = userstores.storeId
+          INNER JOIN shoppingmall ON shoppingmall.id = store.shoppingmallId
+        WHERE userstores.userId = #{userId}
+          AND store.shoppingmallId = #{locationId}
+        ORDER BY store.name ASC
+    </select>
+
+    <select id="getMatchingStores" resultType="string">
+        SELECT id FROM store JOIN tagstore ON store.id = tagstore.storeId
+        WHERE tagstore.tagId = #{tagId}
+        AND store.active = '1'
+        <if test="shoppingmallId != null">
+            AND shoppingmallId = #{shoppingmallId}
+        </if>
+    </select>
+
+    <insert id="setTagForStore">
+        INSERT INTO tagstore (tagId, storeId, date_created) VALUES (#{tagId}, #{storeId}, NOW())
+    </insert>
+
+
+    <select id="getStoreOwner" resultType="string">
+        SELECT ownerUserId FROM store
+        WHERE id = #{storeId}
+    </select>
+
+    <!-- FIXME: LIMIT of one as calling method blows up on receiving a list
+         and ColdFusion won't let us constrain unique ownerUserIds -->
+    <select id="getUsersPrimaryStore" resultType="string">
+        SELECT id FROM store
+        WHERE ownerUserId = #{userId} LIMIT 1
+    </select>
+
+    <update id="update">
+        UPDATE store
+        <set>
+            <if test="store.ownerUserId != null">ownerUserId = #{store.ownerUserId},</if>
+            <if test="store.name != null">name = #{store.name},</if>
+            <if test="store.description != null">description = #{store.description},</if>
+            <if test="store.translatedDescription != null">translatedDescription = #{store.translatedDescription},</if>
+            <if test="store.phoneNumber != null">telephone = #{store.phoneNumber},</if>
+            <if test="store.faxNumber != null">fax = #{store.faxNumber},</if>
+            <if test="store.email != null">email = #{store.email},</if>
+            <if test="store.websiteUrl != null">website = #{store.websiteUrl},</if>
+            <if test="store.storeUrl != null">storeurl = #{store.storeUrl},</if>
+            <if test="store.isActive != null">active = #{store.isActive},</if>
+            <if test="store.hashtag != null">hashtag = #{store.hashtag},</if>
+            <if test="store.address != null">address = #{store.address},</if>
+            <if test="store.postalCode != null">postalcode = #{store.postalCode},</if>
+            <if test="store.city != null">city = #{store.city},</if>
+            <if test="store.latitude != null">latitude = #{store.latitude},</if>
+            <if test="store.longitude != null">longitude = #{store.longitude},</if>
+            <if test="store.location != null and store.location.id != null">shoppingMallId = #{store.location.id},</if>
+            <if test="store.floor != null">floor = #{store.floor},</if>
+            <if test="store.mapNumber != null">number = #{store.mapNumber},</if>
+            <if test="store.mapCoordinates != null">coords = #{store.mapCoordinates},</if>
+            <if test="store.mapShape != null">shape = #{store.mapShape},</if>
+            <if test="store.openingHours != null">
+                <if test="store.openingHours.monday != null">monday = #{store.openingHours.monday},</if>
+                <if test="store.openingHours.tuesday != null">tuesday = #{store.openingHours.tuesday},</if>
+                <if test="store.openingHours.wednesday != null">wednesday = #{store.openingHours.wednesday},</if>
+                <if test="store.openingHours.thursday != null">thursday = #{store.openingHours.thursday},</if>
+                <if test="store.openingHours.friday != null">friday = #{store.openingHours.friday},</if>
+                <if test="store.openingHours.saturday != null">saturday = #{store.openingHours.saturday},</if>
+                <if test="store.openingHours.sunday != null">sunday = #{store.openingHours.sunday},</if>
+                <if test="store.openingHours.specialDay != null">specialDay = #{store.openingHours.specialDay},</if>
+            </if>
+            <if test="store.backgroundWebImage != null">s3backgroundImageWeb = #{store.backgroundWebImage},</if>
+            <if test="store.backgroundMobileImage != null">s3backgroundImageMobile = #{store.backgroundMobileImage},
+            </if>
+            <if test="store.imagePath != null">s3picture = #{store.imagePath},</if>
+            <if test="store.thumbPath != null">s3thumb = #{store.thumbPath}</if>
+        </set>
+        WHERE id = #{storeId}
+    </update>
+
+
+    <!-- Result maps -->
+
+    <resultMap type="Store" id="StoreResult">
+        <constructor>
+            <idArg javaType="string" column="id"/>
+        </constructor>
+
+        <result property="mOwnerUserId" column="ownerUserId"/>
+        <result property="mName" column="name"/>
+        <result property="mDescription" column="description"/>
+        <result property="mTranslatedDescription" column="translatedDescription"/>
+        <result property="mPhoneNumber" column="telephone"/>
+        <result property="mFaxNumber" column="fax"/>
+        <result property="mEmail" column="email"/>
+        <result property="mWebsiteUrl" column="website"/>
+        <result property="mStoreUrl" column="storeurl"/>
+        <result property="mIsActive" column="active"/>
+        <result property="mHashtag" column="hashtag"/>
+
+        <result property="mAddress" column="address"/>
+        <result property="mPostalCode" column="postalcode"/>
+        <result property="mCity" column="city"/>
+        <result property="mLatitude" column="latitude"/>
+        <result property="mLongitude" column="longitude"/>
+
+        <result property="mFloor" column="floor"/>
+        <result property="mMapNumber" column="number"/>
+        <result property="mMapCoordinates" column="coords"/>
+        <result property="mMapShape" column="shape"/>
+
+        <!-- Images -->
+        <result property="mThumbPath" column="s3thumb"/>
+        <result property="mImagePath" column="s3picture"/>
+        <result property="mBackgroundMobileImage" column="s3backgroundImageMobile"/>
+        <result property="mBackgroundWebImage" column="s3backgroundImageWeb"/>
+
+        <!-- Social media (deprecated) --><!--
+        <result property="mTwitterName" column="twitter"/>
+        <result property="mFacebookId" column="facebook"/>
+        <result property="mFacebookToken" column="fbToken"/>
+        <result property="mFoursquareVenueId" column="foursquare"/>
+        <result property="mFoursquareToken" column="fqToken"/>
+        -->
+
+        <!-- Create sparse object for Location -->
+        <association property="mLocation" javaType="Location">
+            <id property="mId" column="shoppingMallId"/>
+            <result property="mName" column="shoppingMallName"/>
+        </association>
+
+        <!-- Create sparse object for OpeningHours -->
+        <association property="mOpeningHours" javaType="OpeningHours">
+            <result property="mMonday" column="monday"/>
+            <result property="mTuesday" column="tuesday"/>
+            <result property="mWednesday" column="wednesday"/>
+            <result property="mThursday" column="thursday"/>
+            <result property="mFriday" column="friday"/>
+            <result property="mSaturday" column="saturday"/>
+            <result property="mSunday" column="sunday"/>
+            <result property="mSpecialDay" column="specialday"/>
+        </association>
+
+    </resultMap>
+
+
+</mapper>

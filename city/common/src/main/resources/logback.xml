@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE logback>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- Configuration -->
+    <contextName>selly-api</contextName>
+    <property name="rootDirectory" value="logs/selly"/>
+    <include resource="logback-appenders.xml"/>
+
+    <!-- Loggers -->
+    <!-- <logger name="org.springframework.web" level="DEBUG"/> -->
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>

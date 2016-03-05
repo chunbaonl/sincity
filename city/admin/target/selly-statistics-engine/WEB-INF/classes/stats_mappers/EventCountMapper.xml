@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.statistics.dao.EventCountMapper">
+
+    <select id="getEventCount" resultType="integer">
+        SELECT
+        COUNT(1)
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        <if test="eventAction!=null">AND event_action = #{eventAction}</if>
+        <if test="eventContext!=null">AND event_context = #{eventContext}</if>
+        <if test="since!=null">AND timestamp &gt; #{since}</if>
+        <if test="until!=null">AND timestamp &lt; #{until}</if>
+    </select>
+
+    <!--<select id="getStoreEventCount" resultType="integer">-->
+        <!--SELECT-->
+        <!--COUNT(store.id)-->
+        <!--FROM events-->
+        <!--WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}-->
+        <!--join store on events.event_data = store.id-->
+        <!--AND store.id IS NOT NULL-->
+        <!--<if test="eventAction!=null">AND event_action = #{eventAction}</if>-->
+        <!--<if test="eventContext!=null">AND event_context = #{eventContext}</if>-->
+        <!--<if test="since!=null">AND timestamp &gt; #{since}</if>-->
+        <!--<if test="until!=null">AND timestamp &lt; #{until}</if>-->
+    <!--</select>-->
+
+</mapper>

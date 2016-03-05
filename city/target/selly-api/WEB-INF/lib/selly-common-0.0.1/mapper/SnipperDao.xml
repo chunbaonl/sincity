@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.SnipperDao">
+
+    <select id="getClipsForUser" resultMap="SnipperClipResultMap">
+        SELECT * FROM social_snipper_clips WHERE user_id = #{userId}
+    </select>
+
+    <select id="getClipsForStore" resultMap="SnipperClipResultMap">
+        SELECT * FROM social_snipper_clips WHERE user_id = #{userId} ORDER BY timestamp DESC LIMIT #{maxItems}
+    </select>
+
+    <select id="getLatestClips" resultMap="SnipperClipResultMap">
+        SELECT * FROM social_snipper_clips INNER JOIN userstores ON social_snipper_clips.user_id = userstores.userId ORDER BY timestamp DESC LIMIT #{maxItems}
+    </select>
+
+    <select id="getLatestClipsForLocation" resultMap="SnipperClipResultMap">
+        SELECT *
+        FROM social_snipper_clips
+        INNER JOIN store ON social_snipper_clips.user_id = store.ownerUserId
+        WHERE store.shoppingMallId = #{locationId}
+        ORDER BY timestamp DESC
+        LIMIT #{maxItems}
+    </select>
+
+    <resultMap type="SnipperClip" id="SnipperClipResultMap">
+        <result property="mUserId" column="user_id"/>
+        <result property="mClipId" column="clip_id"/>
+        <result property="mStillUrl" column="still_url"/>
+        <result property="mVideoUrl" column="video_url"/>
+        <result property="mTitle" column="title"/>
+        <result property="mSnipperUserId" column="snipper_user_id"/>
+        <result property="mSnipperUserName" column="snipper_user_name"/>
+        <result property="mClipWidth" column="width"/>
+        <result property="mClipHeight" column="height"/>
+        <result property="mTimeStamp" column="timestamp"/>
+        <result property="mSnipperUserProfilePic" column="snipper_user_profile_pic"/>
+    </resultMap>
+</mapper>

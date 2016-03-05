@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.statistics.dao.MonthlyCBREReportMap">
+
+
+    <select id="getActiveStoresForMonth" resultType="integer">
+        SELECT COUNT(DISTINCT user_context) FROM events
+        JOIN users on users.id = events.user_context
+        WHERE (tracking_context = 'Selly AMS' OR tracking_context = 'Selly')
+        AND user_context IS NOT NULL
+        AND users.shoppingmallId = #{shoppingmallId}
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+    </select>
+
+    <select id="getUsersForMonth" resultType="integer">
+        SELECT COUNT(1)
+        FROM users WHERE shoppingmallId = #{shoppingmallId}
+        <if test="since">AND users.dateCreated &gt; #{since}</if>
+        <if test="until">AND users.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getActiveDeals" resultType="integer">
+        SELECT COUNT(1) FROM deals WHERE shoppingmallId = #{shoppingmallId}
+        <if test="since">
+            AND endDate &gt; #{since}
+        </if>
+        <if test="until">
+            AND startDate &lt; #{until}
+        </if>
+    </select>
+
+    <select id="getDealsCreated" resultType="integer">
+        SELECT COUNT(1)
+        FROM deals WHERE shoppingmallId = #{shoppingmallId}
+        <if test="since">AND deals.DateCreated &gt; #{since}</if>
+        <if test="until">AND deals.DateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getDealsByPricingModel" resultType="integer">
+        SELECT COUNT(1)
+        FROM deals WHERE shoppingmallId = #{shoppingmallId}
+        <if test="since">AND deals.DateCreated &gt; #{since}</if>
+        <if test="until">AND deals.DateCreated &lt; #{until}</if>
+        AND deals.pricingModel = #{pricingModel.value}
+    </select>
+
+    <select id="getOrders" resultType="integer">
+        SELECT COUNT(1)
+        FROM orders JOIN store ON orders.storeId = store.id WHERE store.shoppingmallId = #{shoppingmallId}
+        <if test="since">AND orders.dateCreated &gt; #{since}</if>
+        <if test="until">AND orders.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getCatches" resultType="integer">
+        SELECT COUNT(1)
+        FROM matchrequest JOIN users ON users.id = matchrequgetLoginsByStoreest.userCreated WHERE users.shoppingmallId =
+        #{shoppingmallId}
+        <if test="since">AND matchrequest.dateCreated &gt; #{since}</if>
+        <if test="until">AND matchrequest.dateCreated &lt; #{until}</if>
+    </select>
+
+
+    <select id="getOpenCatches" resultType="integer">
+        SELECT COUNT(1)
+        FROM matchrequest
+        JOIN users ON users.id = matchrequest.userCreated
+        LEFT JOIN matchrequest_responses ON matchrequest.id =matchrequest_responses.match_id
+        WHERE users.shoppingmallId = #{shoppingmallId} AND matchrequest_responses.match_id IS NULL
+        <if test="since">AND matchrequest.dateCreated &gt; #{since}</if>
+        <if test="until">AND matchrequest.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getMatches" resultType="integer">
+        SELECT COUNT(1)
+        FROM matchrequest_stores JOIN matchrequest ON matchrequest_stores.match_request_id = matchrequest.id
+        WHERE matchrequest.target_location = #{shoppingmallId}
+        <if test="since">AND matchrequest.dateCreated &gt; #{since}</if>
+        <if test="until">AND matchrequest.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getMatchResponses" resultType="integer">
+        SELECT COUNT(1)
+        FROM matchrequest_responses JOIN store ON matchrequest_responses.store_id = store.id
+        WHERE store.shoppingmallId = #{shoppingmallId}
+        <if test="since">AND matchrequest_responses.date_created &gt; #{since}</if>
+        <if test="until">AND matchrequest_responses.date_created &lt; #{until}</if>
+    </select>
+
+
+    <select id="getUsersByGender" resultType="integer">
+        SELECT COUNT(1)
+        FROM users WHERE gender = #{gender} AND shoppingmallId = #{shoppingmallId}
+        <if test="since">AND users.dateCreated &gt; #{since}</if>
+        <if test="until">AND users.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getUsersByAge" resultType="integer">
+        SELECT COUNT(1)
+        FROM users WHERE shoppingmallId = #{shoppingmallId}
+        <if test="startAge">AND users.birthDate IS NOT NULL AND TIMESTAMPDIFF(YEAR,users.birthDate,NOW())>=
+            #{startAge}
+        </if>
+        <if test="endAge">AND users.birthDate IS NOT NULL AND TIMESTAMPDIFF(YEAR,users.birthDate,NOW())&lt; #{endAge}
+        </if>
+        <if test="startAge==null">
+            <if test="endAge==null">
+                AND users.birthDate IS NULL
+            </if>
+        </if>
+        <if test="since">AND users.dateCreated &gt; #{since}</if>
+        <if test="until">AND users.dateCreated &lt; #{until}</if>
+    </select>
+
+    <select id="getStoreFacebookConnects" resultType="integer">
+        SELECT COUNT(1)
+        FROM social_facebook_auth
+        JOIN users ON social_facebook_auth.user_id = users.id
+        JOIN userstores on userstores.userId = social_facebook_auth.user_id
+        WHERE users.shoppingmallId = #{shoppingmallId}
+        AND userstores.userId IS NOT NULL
+        <if test="since">AND social_facebook_auth.date_created &gt; #{since}</if>
+        <if test="until">AND social_facebook_auth.date_created &lt; #{until}</if>
+    </select>
+
+    <select id="getStoreInstagramConnects" resultType="integer">
+        SELECT COUNT(1)
+        FROM social_instagram_auth
+        JOIN users ON social_instagram_auth.user_id = users.id
+        JOIN userstores on userstores.userId = social_instagram_auth.user_id
+        WHERE users.shoppingmallId = #{shoppingmallId}
+        AND userstores.userId IS NOT NULL
+        <if test="since">AND social_instagram_auth.date_created &gt; #{since}</if>
+        <if test="until">AND social_instagram_auth.date_created &lt; #{until}</if>
+    </select>
+
+    <select id="getStoreTwitterConnects" resultType="integer">
+        SELECT COUNT(1)
+        FROM social_twitter_auth
+        JOIN users ON social_twitter_auth.user_id = users.id
+        JOIN userstores on userstores.userId = social_twitter_auth.user_id
+        WHERE users.shoppingmallId = #{shoppingmallId}
+        AND userstores.userId IS NOT NULL
+        <if test="since">AND social_twitter_auth.date_created &gt; #{since}</if>
+        <if test="until">AND social_twitter_auth.date_created &lt; #{until}</if>
+    </select>
+
+    <select id="getAuthSessions" resultType="integer">
+        SELECT COUNT(1)
+        FROM events WHERE tracking_context = #{shoppingmallName}
+        AND client_category = #{platform}
+        AND event_action = 'authenticated_session'
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+    </select>
+
+
+    <select id="getActiveStores" resultType="integer">
+        SELECT COUNT(DISTINCT store.id) as total_logins
+        FROM events JOIN store ON events.event_data = store.id
+        WHERE store.shoppingmallId = #{shoppingmallName}
+        and (tracking_context = 'Selly AMS' OR tracking_context = 'Selly')
+        AND (client_category = #{platform} <if test="altPlatform != null"> or client_category = #{altPlatform}</if>)
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+    </select>
+
+    <select id="getAnonSessions" resultType="integer">
+        SELECT COUNT(1)
+        FROM events WHERE tracking_context = #{shoppingmallName}
+        AND client_category = #{platform}
+        AND event_action = 'anonymous_session'
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+    </select>
+
+
+    <select id="getAndroidMatchRequests" resultMap="MatchRequestElementMap">
+        SELECT DISTINCT
+        tags.name AS 'tag', COUNT(1) AS 'count'
+        FROM matchrequest
+        JOIN matchrequest_tags ON matchrequest.id = matchrequest_tags.matchRequestId
+        JOIN tags ON matchrequest_tags.tagId = tags.id
+         WHERE matchrequest.target_location = #{shoppingmallId}  AND matchrequest.source = '2' -- 2 for android
+        AND matchrequest.dateCreated &gt; #{since}  AND matchrequest.dateCreated &lt; #{until}
+        GROUP BY tags.name ORDER BY count DESC
+    </select>
+
+    <select id="getWebMatchRequests" resultMap="MatchRequestElementMap">
+        SELECT DISTINCT
+        tags.name AS 'tag', COUNT(1) AS 'count'
+        FROM matchrequest
+        JOIN matchrequest_tags ON matchrequest.id = matchrequest_tags.matchRequestId
+        JOIN tags ON matchrequest_tags.tagId = tags.id
+         WHERE matchrequest.target_location = #{shoppingmallId}  AND matchrequest.source = '5' -- 5 for web
+        AND matchrequest.dateCreated &gt; #{since}  AND matchrequest.dateCreated &lt; #{until}
+        GROUP BY tags.name ORDER BY count DESC
+    </select>
+
+    <select id="getIosMatchRequests" resultMap="MatchRequestElementMap">
+        SELECT DISTINCT
+        tags.name AS 'tag', COUNT(1) AS 'count'
+        FROM matchrequest
+        JOIN matchrequest_tags ON matchrequest.id = matchrequest_tags.matchRequestId
+        JOIN tags ON matchrequest_tags.tagId = tags.id
+         WHERE matchrequest.target_location = #{shoppingmallId}  AND matchrequest.source = '1' -- 1 for ios
+        AND matchrequest.dateCreated &gt; #{since}  AND matchrequest.dateCreated &lt; #{until}
+        GROUP BY tags.name ORDER BY count DESC
+    </select>
+
+    <select id="getSearches" resultType="string">
+        SELECT
+        event_data
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        AND event_context = 'shops' AND event_action = 'search'
+        AND timestamp &gt; #{since} AND timestamp &lt; #{until}
+    </select>
+
+
+    <select id="getViews" resultType="integer">
+        SELECT
+        COUNT(1)
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        AND event_action = 'view'
+        AND timestamp &gt; #{since} AND timestamp &lt; #{until}
+    </select>
+
+    <select id="getDealViews" resultType="integer">
+        SELECT
+        COUNT(1)
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        AND event_action = 'view' AND event_context = 'deals'
+        AND timestamp &gt; #{since} AND timestamp &lt; #{until}
+    </select>
+
+    <select id="getClicks" resultType="integer">
+        SELECT
+        COUNT(1)
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        AND event_action = 'open' AND event_context = 'deals'
+        AND timestamp &gt; #{since} AND timestamp &lt; #{until}
+    </select>
+
+    <select id="getShares" resultType="integer">
+        SELECT
+        COUNT(1)
+        FROM events
+        WHERE tracking_context = #{shoppingmallName} AND client_category = #{platform}
+        AND event_action LIKE 'share%'
+        AND timestamp &gt; #{since} AND timestamp &lt; #{until}
+    </select>
+
+
+    <select id="getLoginsByStore" resultMap="CountPairMap">
+        SELECT store.ownerUserId AS stringValue, COUNT(store.id) as intValue
+        FROM events JOIN store ON events.event_data = store.id
+        WHERE event_action = 'authenticated_session'
+        AND (tracking_context = 'Selly AMS' OR tracking_context = 'Selly')
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+        and store.shoppingmallId = #{shoppingmallId}
+        GROUP BY store.id
+    </select>
+
+    <select id="getDealsByStore" resultMap="CountPairMap">
+        SELECT store.ownerUserId AS stringValue, COUNT(DISTINCT deals.id) as intValue
+        FROM deals JOIN store ON deals.storeId = store.id
+        WHERE store.shoppingmallId = #{shoppingmallId}
+        <if test="since">AND deals.dateCreated &gt; #{since}</if>
+        <if test="until">AND deals.dateCreated &lt; #{until}</if>
+        GROUP BY store.id;
+    </select>
+
+    <select id="getAdminActionsByStore" resultMap="CountPairMap">
+        SELECT store.ownerUserId AS stringValue, COUNT(store.id) as intValue
+        FROM events JOIN store ON events.event_data = store.id
+        WHERE event_action = 'admin_action'
+        AND (tracking_context = 'Selly AMS' OR tracking_context = 'Selly')
+        <if test="since">AND events.timestamp &gt; #{since}</if>
+        <if test="until">AND events.timestamp &lt; #{until}</if>
+        and store.shoppingmallId = #{shoppingmallId}
+        GROUP BY store.id
+    </select>
+
+    <resultMap id="MatchRequestElementMap" type="MatchRequestElement">
+        <result property="count" column="count"/>
+        <result property="tagName" column="tag"/>
+    </resultMap>
+
+    <resultMap id="CountPairMap" type="CountPair">
+        <result property="intValue" column="intValue"/>
+        <result property="stringValue" column="stringValue"/>
+    </resultMap>
+
+</mapper>

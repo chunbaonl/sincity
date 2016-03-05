@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.EmailDao">
+
+    <!-- Queries: -->
+    <!--<select id="getTemplate" resultType="Template" resultMap="TemplateResultMap">-->
+    <!--SELECT * FROM templates-->
+    <!--WHERE id=#{id}-->
+    <!--<if test="type != null">-->
+    <!--AND type=#{type}-->
+    <!--</if>-->
+    <!--AND locale = #{locale}-->
+    <!--AND location = #{locationId}-->
+    <!--LIMIT 1-->
+    <!--</select>-->
+
+    <select id="getEmailBodies" resultMap="EmailTemplateMap">
+        SELECT *
+        FROM email_templates
+        WHERE name LIKE 'body%'
+    </select>
+
+    <select id="getEmailHeaders" resultMap="EmailTemplateMap">
+        SELECT *
+        FROM email_templates
+        WHERE name LIKE 'header%'
+    </select>
+
+    <select id="getEmailFooters" parameterType="string" resultMap="EmailTemplateMap">
+        SELECT *
+        FROM email_templates
+        WHERE name LIKE 'footer%'
+    </select>
+
+
+    <select id="getEmailDataModelKeyValuePairs" parameterType="string" resultType="KeyValuePair">
+        SELECT name AS 'key', content AS 'value'
+        FROM email_variables
+        WHERE location_id = #{locationId}
+            AND (locale = #{locale} OR locale = '')
+            AND (target = #{target} OR target = '')
+    </select>
+
+    <!-- Result maps -->
+
+    <!--<resultMap type="Template" id="TemplateResultMap">-->
+    <!--<id property="mId" column="id"/>-->
+    <!--<result property="mLocale" column="locale"/>-->
+    <!--<result property="mType" column="type"/>-->
+    <!--<result property="mContents" column="contents"/>-->
+    <!--</resultMap>-->
+
+    <resultMap id="EmailTemplateMap" type="EmailTemplate">
+        <result property="mId" column="name"/>
+        <result property="mLocale" column="locale"/>
+        <result property="mContent" column="content"/>
+        <result property="mSubject" column="subject"/>
+        <result property="mTargetGroup" column="target"
+                typeHandler="eu.greenhouseinnovation.selly.common.mybatis.handlers.EmailTemplateTargetGroupHandler"/>
+    </resultMap>
+
+
+</mapper>

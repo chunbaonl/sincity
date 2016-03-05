@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.chunbao.city</groupId>
+    <artifactId>city</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+
+    <name>Sin City</name>
+    <description>The project contains all code required to build the Sin City Applications.</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://www.facebook.com/</url>
+
+    <!--  Order matters here: must be from generic to less generic -->
+    <modules>
+        <module>common</module>
+        <module>api</module>
+        <module>engine</module>
+        <module>admin</module>
+    </modules>
+
+    <prerequisites>
+        <maven>3.0.2</maven>
+    </prerequisites>
+
+    <properties>
+        <!-- Project props -->
+        <version.java>1.8</version.java>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>${version.java}</maven.compiler.source>
+        <maven.compiler.target>${version.java}</maven.compiler.target>
+
+        <!-- maven versions -->
+        <version.mvn.compiler>2.3.2</version.mvn.compiler>
+        <version.mvn.war>2.3</version.mvn.war>
+        <version.mvn.resources>2.5</version.mvn.resources>
+        <version.mvn.dependency>2.10</version.mvn.dependency>
+        <version.mvn.buildnumber>1.2</version.mvn.buildnumber>
+        <version.mvn.surefire>2.12.4</version.mvn.surefire>
+        <version.mvn.failsafe>2.12.4</version.mvn.failsafe>
+        <version.mvn.scm>1.9.4</version.mvn.scm>
+        <version.mvn.tomcat>2.2</version.mvn.tomcat>
+
+        <!-- common versions -->
+        <version.slf4j>1.7.5</version.slf4j>
+        <version.logback>1.0.12</version.logback>
+        <version.junit>4.8.2</version.junit>
+	    <version.bouncycastle>1.40</version.bouncycastle>
+        <version.metadata-extractor>2.8.1</version.metadata-extractor>
+        <version.gcm>1.0.2</version.gcm>
+        <version.json>20090211</version.json>
+        <version.javapns>2.2.1</version.javapns>
+        <version.jodatime>2.8.2</version.jodatime>
+        <version.aws>1.9.4</version.aws>
+        <version.freemarker>2.3.19</version.freemarker>
+        <version.javamail>1.4.7</version.javamail>
+
+        <!-- database versions -->
+        <version.mybatis>3.2.2</version.mybatis>
+        <version.mysql-connector>[5.1,5.2]</version.mysql-connector>
+
+        <!-- api version -->
+        <version.java-ws-rs>2.0</version.java-ws-rs>
+        <version.tomcat>[8.0,8.1]</version.tomcat> <!-- Any 8.0.X build -->
+        <version.jackson>2.3.0</version.jackson>
+        <version.jersey>2.7</version.jersey>
+        <version.mimepull>1.6</version.mimepull>
+
+        <!-- notification versions -->
+        <version.activemq>5.7.0</version.activemq>
+        <version.geronimo-jms>1.1</version.geronimo-jms>
+
+        <!-- social versions -->
+        <version.restfb>1.10.1</version.restfb>
+        <version.twitter4j>3.0.4</version.twitter4j>
+        <version.jinstgram>1.0.5</version.jinstgram>
+        <version.jsoup>1.8.1</version.jsoup>
+
+        <!-- statistics versions -->
+        <version.jackson-mapper>1.9.13</version.jackson-mapper>
+        <version.apache-poi>3.12</version.apache-poi>
+
+    </properties>
+
+    <build>
+        <!-- global plugin defaults, modules can override this -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.mvn.compiler}</version>
+                    <configuration>
+                        <source>${version.java}</source>
+                        <target>${version.java}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <!-- for wrapping up our webapps in war files -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${version.mvn.war}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <Implementation-Build>${buildNumber}</Implementation-Build>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <!-- for packaging our test jars for use by other modules' tests -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Copy resources in the correct encoding -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.mvn.resources}</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <outputDirectory/>
+                    </configuration>
+                </plugin>
+
+                <!-- Collect all war files of the submodules into the ./target folder -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${version.mvn.dependency}</version>
+                    <executions>
+                        <execution>
+                            <id>copy-artifact</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>${project.groupId}</groupId>
+                                        <artifactId>${project.artifactId}</artifactId>
+                                        <version>${project.version}</version>
+                                        <type>${project.packaging}</type>
+                                    </artifactItem>
+                                </artifactItems>
+                                <stripVersion>true</stripVersion>
+                                <outputDirectory>../target</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--  Plugin for storing the GIT changelist hash in the META file -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>${version.mvn.buildnumber}</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.mvn.surefire}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${version.mvn.failsafe}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>gcm-server-repository</id>
+            <url>https://github.com/slorber/gcm-server-repository/raw/master/releases/</url>
+        </repository>
+    </repositories>
+
+    <!-- Common dependencies -->
+    <dependencies>
+
+        <!-- FIXME: move to the api (and stats) module poms. We don't need tomcat everywhere -->
+        <!-- Media stuff -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${version.jersey}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${version.jersey}</version>
+        </dependency>
+
+        <!-- Jackson JSON handling -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-xml-provider</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <!-- Intercept Jakarta Commons Logging to log over slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <!-- Intercept Java Util Logging to log over slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <!-- Intercept log4j to log over slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <!-- The slf4j interface -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+
+        <!-- Implementation of the slf4j interface -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version.logback}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${version.mybatis}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

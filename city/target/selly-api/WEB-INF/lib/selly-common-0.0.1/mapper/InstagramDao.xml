@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.InstagramDao">
+
+    <!-- Queries: -->
+
+    <insert id="addConfig" parameterType="InstagramConfig">
+        INSERT INTO social_instagram_auth
+        (user_id, access_token, description)
+        SELECT
+        #{userId}, #{config.mAccessToken}, #{config.mDescription}
+        FROM (SELECT 1) t
+        WHERE NOT EXISTS (SELECT 1 FROM social_instagram_auth WHERE user_id = #{userId})
+    </insert>
+
+    <insert id="storePicture" parameterType="InstagramPicture">
+        INSERT INTO social_instagram_pics
+        (user_id, picture_id, timestamp, instagram_user_id, instagram_user_name, pic_url_thumb, pic_url_std, pic_url_low, caption, latitude, longitude, location_name, profile_image, media_id)
+        SELECT
+        #{picture.mUserId}, #{picture.mPictureId}, #{picture.mTimeStamp}, #{picture.mInstagramUserId}, #{picture.mInstagramUserName}, #{picture.mPicUrlThumb}, #{picture.mPicUrlStd}, #{picture.mPicUrlLow},
+        #{picture.mCaption}, #{picture.mLatitude}, #{picture.mLongitude}, #{picture.mLocationName}, #{picture.mProfileImage}, #{picture.mMediaId}
+        FROM (SELECT 1) t
+        WHERE NOT EXISTS (SELECT 1 FROM social_instagram_pics WHERE picture_id = #{picture.mPictureId})
+    </insert>
+
+    <delete id="removeConfig">
+        DELETE FROM social_instagram_auth WHERE user_id = #{userId}
+    </delete>
+
+    <select id="getConfigForUser" resultMap="InstagramConfigResultMap">
+        SELECT * FROM social_instagram_auth WHERE user_id = #{userId}
+    </select>
+
+    <select id="getPicturesForUser" resultMap="InstagramPictureResultMap">
+        SELECT * FROM social_instagram_pics WHERE user_id = #{userId}
+    </select>
+
+    <select id="getAllConfigsForLocation" resultMap="InstagramConfigResultMap">
+        SELECT social_instagram_auth.*
+        FROM social_instagram_auth
+        INNER JOIN users ON user_id = users.id
+        WHERE users.location_origin = #{locationId};
+    </select>
+
+    <select id="getLatestStorePictures" resultMap="InstagramPictureResultMap">
+        SELECT * from social_instagram_pics INNER JOIN userstores ON social_instagram_pics.user_id = userstores.userId ORDER BY timestamp DESC LIMIT #{maxItems}
+    </select>
+
+    <select id="getLatestStorePicturesForLocation" resultMap="InstagramPictureResultMap">
+        SELECT *
+        FROM social_instagram_pics
+        INNER JOIN store ON social_instagram_pics.user_id = store.ownerUserId
+        WHERE store.shoppingMallId = #{locationId}
+        ORDER BY timestamp DESC
+        LIMIT #{maxItems}
+    </select>
+
+    <select id="getPicturesForStore" resultMap="InstagramPictureResultMap">
+        SELECT * FROM social_instagram_pics WHERE user_id = #{userId} ORDER BY timestamp DESC LIMIT #{maxItems}
+    </select>
+
+    <resultMap type="InstagramConfig" id="InstagramConfigResultMap">
+        <result property="mAccessToken" column="access_token"/>
+        <result property="mDescription" column="description"/>
+        <result property="mUserId" column="user_id"/>
+    </resultMap>
+
+    <resultMap type="InstagramPicture" id="InstagramPictureResultMap">
+        <result property="mUserId" column="user_id"/>
+        <result property="mPictureId" column="picture_id"/>
+        <result property="mInstagramUserId" column="instagram_user_id"/>
+        <result property="mInstagramUserName" column="instagram_user_name"/>
+        <result property="mPicUrlThumb" column="pic_url_thumb"/>
+        <result property="mPicUrlLow" column="pic_url_low"/>
+        <result property="mPicUrlStd" column="pic_url_std"/>
+        <result property="mCaption" column="caption"/>
+        <result property="mLatitude" column="latitude"/>
+        <result property="mLongitude" column="longitude"/>
+        <result property="mLocationName" column="location_name"/>
+        <result property="mTimeStamp" column="timestamp"/>
+        <result property="mProfileImage" column="profile_image"/>
+        <result property="mMediaId" column="media_id"/>
+    </resultMap>
+</mapper>

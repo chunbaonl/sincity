@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="selly-api:war">
+    <output-path>$PROJECT_DIR$/api/target</output-path>
+    <root id="archive" name="selly-api.war">
+      <element id="artifact" artifact-name="selly-api:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.CalendarEventDao">
+
+    <select id="getCurrentAndUpcommingCalendarEvents" resultType="CalendarEvent" resultMap="CalendarEventResult">
+        SELECT ce.*
+        FROM calendarevents ce
+        INNER JOIN calendartypes ct ON ce.categoryId=ct.id
+             WHERE ce.shoppingmallid = #{locationId}
+               AND ct.`name`='website' 
+               AND ce.enddate &gt;= NOW()
+          ORDER BY ce.startdate DESC;
+    </select>
+    
+    <resultMap type="CalendarEvent" id="CalendarEventResult">
+        <constructor/>
+
+        <result property="sId" column="id"/>
+        <result property="sTitle" column="title"/>
+        <result property="sLocation" column="location"/>
+        <result property="sDescription" column="description"/>
+        <result property="oStartDate" column="startdate"/>
+        <result property="oEndDate" column="enddate"/>
+        <result property="s3PicturePath" column="s3picture"/>
+        <result property="s3ThumbPath" column="s3thumb"/>
+        
+    </resultMap>
+    
+</mapper>

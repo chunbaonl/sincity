@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<enunciate label="selly-api" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.25.xsd">
+
+    <api-classes>
+
+    </api-classes>
+
+    <modules>
+        <docs docsDir="SellyAPI" title="SELLY API"/>
+        <services>
+            <rest>
+                <custom-resource-parameter-annotation qualifiedName="org.glassfish.jersey.media.multipart.FormDataParam" />
+                <custom-resource-parameter-annotation qualifiedName="org.glassfish.jersey.media.multipart.FormDataBodyPart"/>
+                <custom-resource-parameter-annotation qualifiedName="org.glassfish.jersey.media.multipart.FormDataContentDisposition" />
+            </rest>
+        </services>
+    </modules>
+
+
+</enunciate>

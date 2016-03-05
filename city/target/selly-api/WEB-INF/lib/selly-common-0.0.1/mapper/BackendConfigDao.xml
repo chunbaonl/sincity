@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.BackendConfigDao">
+
+    <!-- Queries: -->
+
+    <select id="getBucketConfig" resultType="BackendBucketConfig" resultMap="BackendBucketConfigResult">
+        SELECT * FROM backend_bucket_config WHERE bucket_name = #{bucketName}
+    </select>
+
+    <resultMap type="BackendBucketConfig" id="BackendBucketConfigResult">
+        <!-- Config -->
+        <result property="mBucketName" column="bucket_name"/>
+        <result property="mCname" column="cname"/>
+        <result property="mFullUrl" column="full_url"/>
+    </resultMap>
+
+</mapper>

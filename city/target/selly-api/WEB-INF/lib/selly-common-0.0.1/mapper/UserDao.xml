@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.common.model.dao.UserDao">
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    basic
+    -->
+
+    <insert id="storeUser" parameterType="User">
+        INSERT INTO users (
+            id,
+            username,
+            password,
+            dateCreated,
+            ipAddress,
+            firstName,
+            lastName,
+            infix,
+            email,
+            address,
+            postalCode,
+            city,
+            country,
+            phoneNumber,
+            gender,
+            birthdate,
+            verified,
+            facebook_id,
+            facebook_token,
+            s3picture,
+            s3thumb,
+            job_title,
+            active,
+            profileId,
+            chat_password,
+            shoppingmallId,
+            location_origin
+        ) VALUES (
+            #{mId},
+            #{mUsername},
+            #{mPassword},
+            #{mDateCreated},
+            #{mLastIpAddress},
+            #{mFirstName},
+            #{mLastName},
+            #{mInfix},
+            #{mEmail},
+            #{mAddress},
+            #{mPostalCode},
+            #{mCity},
+            #{mCountry},
+            #{mPhoneNumber},
+            #{mGender},
+            #{mBirthday},
+            #{mVerified},
+            #{mFacebookId},
+            #{mFacebookAccessToken},
+            #{mProfilePicture},
+            #{mProfilePictureThumb},
+            #{mJobTitle},
+            #{mIsActive},
+            #{mSecurityProfileId},
+            #{mChatPassword},
+            #{mShoppingMallId},
+            #{mLocationOrigin}
+        )
+    </insert>
+
+    <insert id="insertUpdateFacebookToken" parameterType="User">
+        REPLACE INTO users_facebook_credentials (
+          user_id,
+          shoppingmallId,
+          facebook_id,
+          facebook_token
+        ) VALUES (
+          #{mId},
+          #{mShoppingMallId},
+          #{mFacebookId},
+          #{mFacebookAccessToken}
+        )
+    </insert>
+
+
+    <!-- REMINDER: location_origin should never be updated! -->
+    <update id="updateUser" parameterType="User">
+        UPDATE users
+        <set>
+            <if test="mUsername != null">username=#{mUsername},</if>
+            <if test="mPassword != null">password=#{mPassword},</if>
+            <if test="mChatPassword != null">chat_password=#{mChatPassword},</if>
+            <if test="mIsActive != null">active=#{mIsActive},</if>
+            <if test="mVerified != null">verified=#{mVerified},</if>
+            <if test="mDateModified != null">dateModified=#{mDateModified},</if>
+            <if test="mLastIpAddress != null">lastUsedIPAdress=#{mLastIpAddress},</if>
+            <if test="mFirstName != null">firstname=#{mFirstName},</if>
+            <if test="mInfix != null">infix=#{mInfix},</if>
+            <if test="mLastName != null">lastname=#{mLastName},</if>
+            <if test="mEmail != null">email=#{mEmail},</if>
+            <if test="mAddress != null">address=#{mAddress},</if>
+            <if test="mPostalCode != null">postalCode=#{mPostalCode},</if>
+            <if test="mCity != null">city=#{mCity},</if>
+            <if test="mCountry != null">country=#{mCountry},</if>
+            <if test="mPhoneNumber != null">phoneNumber=#{mPhoneNumber},</if>
+            <if test="mGender != null">gender=#{mGender},</if>
+            <if test="mBirthday != null">birthdate=#{mBirthday},</if>
+            <if test="mFacebookId != null">facebook_id=#{mFacebookId},</if>
+            <if test="mFacebookAccessToken != null">facebook_token=#{mFacebookAccessToken},</if>
+            <if test="mProfilePicture != null">s3picture =#{mProfilePicture},</if>
+            <if test="mProfilePictureThumb != null">s3thumb =#{mProfilePictureThumb},</if>
+            <if test="mJobTitle != null">job_title=#{mJobTitle},</if>
+            <if test="mSecurityProfileId != null">profileId = #{mSecurityProfileId},</if>
+            <if test="mShoppingMallId != null">shoppingmallId = #{mShoppingMallId}</if>
+        </set>
+        <where>
+            id=#{mId}
+        </where>
+    </update>
+
+    <!-- deleteUser handled by MyBatis annotation sql in UserDao.java -->
+
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    gets
+    -->
+
+    <select id="getById" parameterType="string" resultMap="UserResult">
+        SELECT * FROM users WHERE id = #{userId}
+    </select>
+
+    <select id="getSparseUserById" parameterType="string" resultMap="UserResult">
+        SELECT id, firstName, lastName FROM users WHERE id = #{userId}
+    </select>
+
+    <select id="getByEmail" parameterType="string" resultMap="UserResult">
+        SELECT users.* FROM users WHERE email = #{email}
+    </select>
+
+    <select id="getByUsername" parameterType="string" resultMap="UserResult">
+        SELECT users.* FROM users WHERE username = #{username}
+    </select>
+
+    <select id="getByFacebookId" parameterType="string" resultMap="UserResult">
+        SELECT users.* FROM users WHERE facebook_id = #{facebookId}
+    </select>
+
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    user meta
+    -->
+
+    <!-- The below '&lt;&gt;' translates to '<>' which is the SQL 'not equal to' -->
+    <select id="isUniqueEmail" resultType="integer" parameterType="User">
+        SELECT COUNT(1) FROM users
+        <where>
+            <if test="mId != null">
+                id &lt;&gt; #{mId} AND
+            </if>
+            email = #{mEmail}
+        </where>
+    </select>
+
+    <!-- The below '&lt;&gt;' translates to '<>' which is the SQL 'not equal to' -->
+    <select id="isUniqueUsername" resultType="integer" parameterType="User">
+        SELECT COUNT(1) FROM users
+        <where>
+            <if test="mId != null">
+                id &lt;&gt; #{mId} AND
+            </if>
+            username = #{mUsername}
+        </where>
+    </select>
+
+
+    <update id="setUserLastSeen">
+        UPDATE users
+        SET
+        <if test="userIp != null">ipAddress = #{userIp},</if>
+        last_seen = #{lastSeen}
+        WHERE id = #{userId}
+    </update>
+
+    <!-- TODO: We need a query to update on login events -->
+    <!-- It should perform the same actions as 'setUserLastSeen' along with incrementing the login counter -->
+    <!--
+        UPDATE users
+        SET
+            <if test="userIp != null">ipAddress = #{userIp},</if>
+            loginCount = loginCount + 1,
+            last_seen = #{dateNow},
+            dateLastLogin = #{dateNow}
+        WHERE id = #{userId}
+    -->
+
+
+    <update id="updateNonce">
+        UPDATE users
+        <set>
+            resetToken = #{nonce}
+        </set>
+        <where>
+            id = #{userId}
+        </where>
+    </update>
+
+    <update id="updateProfilePicture">
+        UPDATE users
+        <set>
+            s3picture =#{filePointer},
+            s3thumb =#{thumbPointer}
+        </set>
+        <where>
+            id=#{userId}
+        </where>
+    </update>
+
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    store users
+    -->
+
+    <select id="isStoreOwner" resultType="integer">
+        SELECT COUNT(1) FROM userstores where userId = #{userId}
+    </select>
+
+    <select id="getSparseUsersForStore" parameterType="string" resultMap="UserResult">
+        SELECT id, firstName, lastName FROM users JOIN userstores ON users.id = userstores.userId WHERE userstores.storeId = #{storeId}
+    </select>
+
+    <select id="getUsersForStore" parameterType="string" resultMap="UserResult">
+        SELECT users.* FROM users JOIN userstores ON users.id = userstores.userId WHERE userstores.storeId = #{storeId}
+    </select>
+
+    <select id="getUserIdsForStore" resultType="string">
+        SELECT userId FROM userstores where storeId = #{storeId}
+    </select>
+
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    favorites
+    -->
+
+    <insert id="addUserStoreFavorite" parameterType="User">
+        INSERT INTO user_preferences (user_id, store_id)
+        SELECT
+        #{userId}, #{storeId}
+        FROM (SELECT 1) t
+        WHERE NOT EXISTS (SELECT 1 FROM user_preferences WHERE user_id = #{userId} AND store_id = #{storeId})
+    </insert>
+
+    <delete id="removeUserStoreFavorite" parameterType="User">
+        DELETE from user_preferences
+        WHERE user_id = #{userId} and store_id = #{storePreference.mStoreId}
+    </delete>
+
+    <delete id="removeAllUserStoreFavorites">
+        DELETE from user_preferences
+        WHERE user_id = #{userId}
+    </delete>
+
+
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    preferences
+    -->
+
+    <insert id="addUserNotificationsPreference" parameterType="User">
+        INSERT INTO user_notification_preferences (user_id, fashion_design, home_antiques, food_deli, beer_cocktails, coffee_lunch, gifts_gadgets, beauty_health, diamonds_pearls, specials, general)
+        SELECT
+        #{userId}, #{preference.fashionAndDesign}, #{preference.homeAndAntiques}, #{preference.foodAndDeli}, #{preference.beerAndCocktails}, #{preference.coffeeAndLunch},
+        #{preference.giftsAndGadgets}, #{preference.beautyAndHealth}, #{preference.diamondsAndPearls}, #{preference.specials},#{preference.generalNotifications}
+        FROM (SELECT 1) t
+        WHERE NOT EXISTS (SELECT 1 FROM user_notification_preferences WHERE user_id = #{userId})
+    </insert>
+
+    <insert id="updateUserNotificationsPreference" parameterType="NotificationPreference">
+        UPDATE user_notification_preferences
+        <set>
+            <if test="preference.fashionAndDesign != null">fashion_design = #{preference.fashionAndDesign},</if>
+            <if test="preference.homeAndAntiques != null">home_antiques = #{preference.homeAndAntiques},</if>
+            <if test="preference.foodAndDeli != null">food_deli = #{preference.foodAndDeli},</if>
+            <if test="preference.beerAndCocktails != null">beer_cocktails = #{preference.beerAndCocktails},</if>
+            <if test="preference.coffeeAndLunch != null">coffee_lunch = #{preference.coffeeAndLunch},</if>
+            <if test="preference.giftsAndGadgets != null">gifts_gadgets = #{preference.giftsAndGadgets},</if>
+            <if test="preference.beautyAndHealth != null">beauty_health = #{preference.beautyAndHealth},</if>
+            <if test="preference.diamondsAndPearls != null">diamonds_pearls = #{preference.diamondsAndPearls},</if>
+            <if test="preference.specials != null">specials = #{preference.specials},</if>
+            <if test="preference.generalNotifications != null">general = #{preference.generalNotifications},</if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </insert>
+
+    <select id="hasNotificationsPreference" parameterType="string" resultType="integer">
+        SELECT COUNT(1) FROM user_notification_preferences
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="getNotificationsPreference" parameterType="string" resultMap="NotificationPreferenceMap">
+        SELECT * FROM user_notification_preferences
+        WHERE user_id = #{userId}
+    </select>
+
+    <delete id="removeUserNotificationsPreference">
+        DELETE from user_notification_preferences
+        WHERE user_id = #{userId}
+    </delete>
+
+    <!-- Result maps -->
+    <resultMap id="NotificationPreferenceMap" type="eu.greenhouseinnovation.selly.common.model.NotificationsPreference">
+        <result property="userId" column="user_id" />
+        <result property="fashionAndDesign" column="fashion_design" />
+        <result property="homeAndAntiques" column="home_antiques" />
+        <result property="foodAndDeli" column="food_deli"/>
+        <result property="beerAndCocktails" column="beer_cocktails" />
+        <result property="coffeeAndLunch" column="coffee_lunch" />
+        <result property="giftsAndGadgets" column="gifts_gadgets" />
+        <result property="beautyAndHealth" column="beauty_health" />
+        <result property="diamondsAndPearls" column="diamonds_pearls" />
+        <result property="specials" column="specials" />
+        <result property="generalNotifications" column="general" />
+    </resultMap>
+    <!--
+    //////////////////////////////////////////////////////////////////////
+    ////    result maps
+    -->
+
+    <resultMap type="User" id="UserResult">
+
+        <constructor>
+            <idArg javaType="string" column="id"/>
+        </constructor>
+        <result property="mUsername" column="username"/>
+        <result property="mPassword" column="password"/>
+        <result property="mChatPassword" column="chat_password"/>
+        <result property="mSecurityProfileId" column="profileId"/>
+        <result property="mDateCreated" column="datecreated"/>
+        <result property="mDateModified" column="dateModified"/>
+
+        <!-- personal -->
+        <result property="mFirstName" column="firstName"/>
+        <result property="mInfix" column="infix"/>
+        <result property="mLastName" column="lastName"/>
+        <result property="mBirthday" column="birthdate"/>
+        <result property="mGender" column="gender"/>
+
+        <!-- contact -->
+        <result property="mEmail" column="email"/>
+        <result property="mPhoneNumber" column="phoneNumber"/>
+
+        <!-- address TODO: make an 'Address' class that can be shared by diff parent objects (User, Store etc) -->
+        <result property="mAddress" column="address"/>
+        <result property="mHouseNumber" column="houseNumber"/>
+        <result property="mPostalCode" column="postalCode"/>
+        <result property="mCity" column="city"/>
+        <result property="mCountry" column="country"/>
+
+        <!-- location/shoppingmall -->
+        <result property="mShoppingMallId" column="shoppingmallId"/>
+        <result property="mLocationOrigin" column="location_origin"/>
+
+        <!-- pics -->
+        <result property="mProfilePicture" column="s3picture"/>
+        <result property="mProfilePictureThumb" column="s3thumb"/>
+
+        <!-- Create sparse objects -->
+        <association property="mToken" javaType="Token">
+            <id property="mToken" column="push_token"/>
+            <result property="mDeviceFamily" column="push_platform"
+                    typeHandler="eu.greenhouseinnovation.selly.common.mybatis.handlers.DeviceFamilyHandler"/>
+        </association>
+    </resultMap>
+
+</mapper>

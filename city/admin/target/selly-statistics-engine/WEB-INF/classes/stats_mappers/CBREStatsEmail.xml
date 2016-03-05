@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.statistics.dao.CBREStatsEmail">
+
+    <select id="getTopDealsForPeriod" resultMap="RankedObjectMap">
+        SELECT COUNT(1) AS "rank", event_data AS "objId"
+        FROM events JOIN deals ON events.event_data = deals.id
+        WHERE event_context = "deals"
+        <if test="startTime!=null">
+            AND timestamp &gt; #{startTime}
+        </if>
+        <if test="endTime!=null">
+            AND timestamp &lt; #{endTime}
+        </if>
+        GROUP BY event_data
+        ORDER BY rank
+        DESC LIMIT #{limit}
+    </select>
+
+
+    <resultMap id="RankedObjectMap" type="RankedObject">
+        <result property="objId" column="objId"/>
+        <result property="rank" column="rank"/>
+    </resultMap>
+
+</mapper>

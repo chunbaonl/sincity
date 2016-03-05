@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="database.properties"/>
+
+    <settings>
+        <setting name="defaultExecutorType" value="REUSE"/>
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+
+
+    <typeAliases>
+        <package name="eu.greenhouseinnovation.selly.statistics.model"/>
+    </typeAliases>
+
+
+    <environments default="local-dev">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="${dev-database.url}"/>
+                <property name="username" value="${dev-database.username}"/>
+                <property name="password" value="${dev-database.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="production">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="${prod-database.url}"/>
+                <property name="username" value="${prod-database.username}"/>
+                <property name="password" value="${prod-database.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="local-dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="${local-database.url}"/>
+                <property name="username" value="${dev-database.username}"/>
+                <property name="password" value="${dev-database.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="local-prod">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="${local-prod-database.url}"/>
+                <property name="username" value="${prod-database.username}"/>
+                <property name="password" value="${prod-database.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="stats_mappers/MonthlyCBREReportMap.xml"/>
+        <mapper resource="stats_mappers/CBREStatsEmail.xml"/>
+        <mapper resource="stats_mappers/MetadataMapper.xml"/>
+        <mapper resource="stats_mappers/StoreMapper.xml"/>
+        <mapper resource="stats_mappers/EventCountMapper.xml"/>
+    </mappers>
+
+</configuration>

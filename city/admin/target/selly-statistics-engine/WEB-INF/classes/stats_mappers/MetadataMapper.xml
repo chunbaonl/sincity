@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eu.greenhouseinnovation.selly.statistics.dao.MetadataMapper">
+
+    <select id="getStoreIds" resultMap="StoreMap">
+        SELECT id, name FROM store WHERE shoppingmallId = #{shoppingmallId} ORDER BY name ASC;
+    </select>
+
+    <select id="getShoppingmalls" resultMap="ShoppingmallMap">
+        SELECT id, name FROM shoppingmall;
+    </select>
+
+    <select id="getShoppingmallById" resultMap="ShoppingmallMap">
+        SELECT id, name FROM shoppingmall WHERE id = #{shoppingmallId};
+    </select>
+
+    <resultMap id="ShoppingmallMap" type="ShoppingmallMeta">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <resultMap id="StoreMap" type="StoreMeta">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <resourceExtensions />
+    <wildcardResourcePatterns />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-common" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="selly-common" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-jobs-engine" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="selly-jobs-engine" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-social-engine" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-statistics-engine" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="selly-statistics-engine" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-api" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="selly-api" />
+      </profile>
+      <profile default="false" name="Annotation profile for selly-notification-engine" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="admin" target="1.8" />
+      <module name="api" target="1.8" />
+      <module name="city" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="engine" target="1.8" />
+      <module name="selly-api" target="1.8" />
+      <module name="selly-common" target="1.8" />
+      <module name="selly-jobs-engine" target="1.8" />
+      <module name="selly-notification-engine" target="1.8" />
+      <module name="selly-social-engine" target="1.8" />
+      <module name="selly-statistics-engine" target="1.8" />
+      <module name="selly-webapps" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
