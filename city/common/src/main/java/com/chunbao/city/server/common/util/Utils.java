@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.UUID;
 
 public class Utils {
 
@@ -74,5 +77,49 @@ public class Utils {
             e.printStackTrace();
         }
         return json;
+    }
+
+    public static String getFirstValueFromStringArray(final List<String> array){
+        String value=null;
+        if(array!=null && array.size()>0){
+            value=array.get(0);
+        }
+        return value;
+    }
+
+    public static String getFirstValueFromStringArray(final Enumeration<String> array){
+        String value=null;
+        if(array!=null && array.hasMoreElements()){
+            value=array.nextElement();
+        }
+        return value;
+    }
+
+    public static boolean isNullOrEmpty(String str){
+        return str==null || "".equals(str);
+    }
+
+    /**
+     * Generate a GUID string of 5-segments: 8-4-4-4-12
+     *
+     * @return a 36-character GUID
+     */
+    public static String generate() {
+        return UUID.randomUUID().toString().toUpperCase();
+    }
+
+    public static boolean isValidId(String id){
+        if(id==null || id.length()!=36){
+            return false;
+        }
+        return true;
+    }
+
+    public static String getSeparator() {
+        String separator = System.getProperty( "line.separator" );
+        return separator;
+    }
+    public static String getSeparatorDot() {
+        return ",";
     }
 }

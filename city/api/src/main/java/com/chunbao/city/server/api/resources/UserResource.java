@@ -7,6 +7,6 @@ import javax.ws.rs.Path;
  * Description:
  */
 @Path("/user")
-public class UserResource extends ChunBaoResource {
+public class UserResource extends MyResource {
 
 }

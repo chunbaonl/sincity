@@ -5,6 +5,12 @@ package com.chunbao.city.server.common.db.po;
  * Description: 从数据库中读取,并且有线程定时更新
  */
 public class ApplicationVariables {
-    public static int expirationForCategory=12*60*60;
-    public static int expirationForStartPage=12*60*60;
+    public final static int DEFAULT_TIMEOUT = 10;
+    public final static String API_SERVER_URL="http://api.sincity.com/";
+    //管理设备id
+    public final static String ADMIN_DEVICE_ID="090939";
+
+    //timeout
+    public static int expirationForCategory=DEFAULT_TIMEOUT;
+    public static int expiration_start=DEFAULT_TIMEOUT;
 }

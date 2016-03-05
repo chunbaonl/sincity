@@ -1,7 +1,7 @@
 package com.chunbao.city.server.api.resources;
 
 
-import com.chunbao.city.server.api.response.ActivityList;
+import com.chunbao.city.server.api.responses.ActivityList;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.DefaultValue;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
  * Description:
  */
 @Path("/activity")
-public class ActivityResource extends ChunBaoResource{
+public class ActivityResource extends MyResource {
     @GET
     @PermitAll
     @Produces({ MediaType.APPLICATION_JSON })
