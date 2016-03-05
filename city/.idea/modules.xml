@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/admin/selly-statistics-engine.iml" filepath="$PROJECT_DIR$/admin/selly-statistics-engine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/api/selly-api.iml" filepath="$PROJECT_DIR$/api/selly-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/city.iml" filepath="$PROJECT_DIR$/city.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common/selly-common.iml" filepath="$PROJECT_DIR$/common/selly-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/engine/selly-jobs-engine.iml" filepath="$PROJECT_DIR$/engine/selly-jobs-engine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/html-test/html-test.iml" filepath="$PROJECT_DIR$/html-test/html-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin/admin.iml" filepath="$PROJECT_DIR$/admin/admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engine/engine.iml" filepath="$PROJECT_DIR$/engine/engine.iml" />
     </modules>
   </component>
 </project>

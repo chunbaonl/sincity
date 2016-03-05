@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: api
+Implementation-Version: 0.0.1
+Built-By: anchunyang
+Implementation-Build: 
+Implementation-Vendor-Id: com.chunbao.city
+Created-By: IntelliJ IDEA
+Build-Jdk: 1.8.0_66
+

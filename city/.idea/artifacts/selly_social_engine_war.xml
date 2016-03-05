@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="selly-social-engine:war">
-    <output-path>$PROJECT_DIR$/selly-social-engine/target</output-path>
-    <root id="archive" name="selly-social-engine.war">
-      <element id="artifact" artifact-name="selly-social-engine:war exploded" />
-    </root>
-  </artifact>
-</component>

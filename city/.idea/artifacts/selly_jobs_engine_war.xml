@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="selly-jobs-engine:war">
-    <output-path>$PROJECT_DIR$/engine/target</output-path>
-    <root id="archive" name="selly-jobs-engine.war">
-      <element id="artifact" artifact-name="selly-jobs-engine:war exploded" />
-    </root>
-  </artifact>
-</component>

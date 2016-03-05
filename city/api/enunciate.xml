@@ -7,7 +7,7 @@
     </api-classes>
 
     <modules>
-        <docs docsDir="SellyAPI" title="SELLY API"/>
+        <docs docsDir="API" title="API"/>
         <services>
             <rest>
                 <custom-resource-parameter-annotation qualifiedName="org.glassfish.jersey.media.multipart.FormDataParam" />

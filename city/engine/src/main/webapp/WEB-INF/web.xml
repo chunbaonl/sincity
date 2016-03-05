@@ -3,7 +3,7 @@
          id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>selly-jobs-engine</servlet-name>
+        <servlet-name>admin</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 
         <init-param>
@@ -15,12 +15,9 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>selly-jobs-engine</servlet-name>
+        <servlet-name>admin</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <listener>
-        <listener-class>eu.greenhouseinnovation.selly.jobsengine.ServletListener</listener-class>
-    </listener>
 
 </web-app>
