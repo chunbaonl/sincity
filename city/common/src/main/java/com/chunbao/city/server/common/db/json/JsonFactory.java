@@ -1,5 +1,6 @@
 package com.chunbao.city.server.common.db.json;
 
+import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.db.po.Category;
 import com.chunbao.city.server.common.db.po.ServerInfo;
 import com.chunbao.city.server.common.db.po.User;
@@ -45,6 +46,12 @@ public class JsonFactory {
         newJson.picServerUrl=oldPo.picServerUrl;
         newJson.loadText=oldPo.loadText;
         newJson.loadImage=oldPo.loadImage;
+        return newJson;
+    }
+
+    public static ActivityJson makeActivityJson(Activity oldPo){
+        ActivityJson newJson = new ActivityJson();
+
         return newJson;
     }
 }
