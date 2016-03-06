@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.resources;
 
 
 import com.chunbao.city.server.api.providers.Exceptions;
+import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.common.constant.UserRoles;
@@ -32,7 +33,7 @@ public class ActivityResource extends MyResource {
 
     private static final Logger mLogger = LoggerFactory.getLogger(ActivityResource.class);
 
-    //list the activity for one category
+    //list the activity for one category, if the user has the right to view it.
     @GET
     @RolesAllowed(UserRoles.Guest)
     @Produces({ CHINESE_JSON_CHARSET })
@@ -45,6 +46,26 @@ public class ActivityResource extends MyResource {
         List<Activity> list = ActivityService.getActivityList(page,categoryId,getUser().id);
 
         ListActivityResponse data = new ListActivityResponse();
+        for(Activity element : list){
+            data.activityList.add(JsonFactory.makeActivityJson(element));
+        }
+
+        return makeJson(data);
+    }
+
+    //list the activity for one user
+    @GET
+    @RolesAllowed(UserRoles.Guest)
+    @Produces({ CHINESE_JSON_CHARSET })
+    @Path("/listuser")
+    public String getActivityListByUser(@PathParam("page") @DefaultValue("1") final int page,
+                                  @PathParam("userId") final String userId) {
+
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId");
+
+        List<Activity> list = ActivityService.getActivityListByUser(page,userId);
+
+        ListActivityByUserResponse data = new ListActivityByUserResponse();
         for(Activity element : list){
             data.activityList.add(JsonFactory.makeActivityJson(element));
         }

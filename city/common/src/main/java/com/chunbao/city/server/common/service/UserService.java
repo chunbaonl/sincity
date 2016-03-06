@@ -20,4 +20,17 @@ public class UserService extends MyService {
         guest.password= UserConstant.GUEST_PASSWORD;
         return guest;
     }
+
+
+    /**
+     * 读取guest用户信息
+     * @return
+     */
+    public static User getUserById(final String userId){
+        User user = new User();
+        user.setUserRole();
+        user.username= UserConstant.GUEST_USERNAME;
+        user.password= UserConstant.GUEST_PASSWORD;
+        return user;
+    }
 }

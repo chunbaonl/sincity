@@ -60,7 +60,6 @@ public class StringUtil {
         return outStr;
     }
 
-
     /**
      * return the json string
      *
@@ -94,6 +93,16 @@ public class StringUtil {
         return value;
     }
 
+    public static float getFloatByString(String str){
+        float data = 0;
+        try{
+            data = Float.valueOf(str);
+        }
+        catch (Exception e){
+            mLogger.warn("{}, {}", e.getMessage(), e.fillInStackTrace());
+        }
+        return data;
+    }
 
     public static String getSeparator() {
         String separator = System.getProperty( "line.separator" );
@@ -108,7 +117,7 @@ public class StringUtil {
         try {
             o = mapper.readValue(value, clazz);
         } catch (Exception e) {
-            mLogger.error("{}, {}", e.getMessage(), e.fillInStackTrace());
+            mLogger.warn("{}, {}", e.getMessage(), e.fillInStackTrace());
         }
         return o;
     }

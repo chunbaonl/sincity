@@ -5,6 +5,8 @@ import com.chunbao.city.server.common.db.po.Category;
 import com.chunbao.city.server.common.db.po.ServerInfo;
 import com.chunbao.city.server.common.db.po.User;
 
+import java.util.Date;
+
 /**
  * Created by anchunyang on 06/03/16.
  * Description:
@@ -19,6 +21,7 @@ public class JsonFactory {
         newJson.password=oldPo.password;
         newJson.wallet=oldPo.wallet;
         newJson.likes=oldPo.likes;
+        newJson.totalActivity=oldPo.totalActivity;
         newJson.description=oldPo.description;
         newJson.smallPotoId=oldPo.smallPotoId;
         newJson.bigPotoId=oldPo.bigPotoId;
@@ -51,7 +54,22 @@ public class JsonFactory {
 
     public static ActivityJson makeActivityJson(Activity oldPo){
         ActivityJson newJson = new ActivityJson();
-
+        newJson.id=oldPo.id;
+        newJson.updateDate=oldPo.updateDate;
+        newJson.userId=oldPo.userId;
+        newJson.name=oldPo.name;
+        newJson.description=oldPo.description;
+        newJson.smallPotoId=oldPo.smallPotoId;
+        newJson.bigPotoId=oldPo.bigPotoId;
+        newJson.startDate=oldPo.startDate;
+        newJson.stopDate=oldPo.stopDate;
+        newJson.isExpired=oldPo.isExpired;
+        newJson.costPerDay=oldPo.costPerDay;
+        newJson.totalComments=oldPo.totalComments;
+        newJson.totalLikes=oldPo.totalLikes;
+        newJson.totalVisitors=oldPo.totalVisitors;
+        newJson.longitude=oldPo.longitude;
+        newJson.latitude=oldPo.latitude;
         return newJson;
     }
 }

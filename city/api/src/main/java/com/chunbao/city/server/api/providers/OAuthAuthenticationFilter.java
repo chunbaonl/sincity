@@ -5,6 +5,7 @@ import com.chunbao.city.server.common.constant.AdminUser;
 import com.chunbao.city.server.common.constant.Server;
 import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.constant.UserRoles;
+import com.chunbao.city.server.common.util.DateTimeUtil;
 import com.chunbao.city.server.common.util.StringUtil;
 import org.glassfish.jersey.oauth1.signature.OAuth1Signature;
 import org.glassfish.jersey.server.oauth1.internal.OAuthServerRequest;
@@ -21,6 +22,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
+import java.util.Date;
 
 @PreMatching
 @Provider
@@ -55,7 +57,7 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
 
     private void log(final ContainerRequestContext containerRequest){
         String requestUrl = (new OAuthServerRequest(containerRequest)).getRequestURL().getPath();
-        mLogger.info(requestUrl);
+        mLogger.info("time = {}, path = {}", DateTimeUtil.formatTimeToString(new Date()),requestUrl);
     }
 
     private void doOauth(final ContainerRequestContext containerRequest){
@@ -90,8 +92,8 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
         user.password=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_PASSWORD));
         user.deviceId=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_ID));
         user.deviceLanguage=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_LANGUAGE));
-        user.longitude=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE));
-        user.latitude=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE));
+        user.longitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE)));
+        user.latitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE)));
         user.appVersion=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_APP_VERSION));
 
         //如果用户不能存在

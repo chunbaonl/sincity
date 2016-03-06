@@ -9,6 +9,7 @@ public class UserJson extends MyJson {
     public String password;
     public int wallet;
     public int likes;
+    public int totalActivity;
     public String description;
     public String smallPotoId;
     public String bigPotoId;

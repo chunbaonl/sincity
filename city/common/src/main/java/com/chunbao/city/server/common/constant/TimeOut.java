@@ -21,4 +21,7 @@ public class TimeOut {
     //timeout
     public static int ping = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
     public static int loadPage = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
+    public static int listActivity = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
+    public static int listActivityByUser = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
+    public static int userProfile = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
 }

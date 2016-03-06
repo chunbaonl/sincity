@@ -12,6 +12,7 @@ public class User extends MyPo implements java.security.Principal {
     public String password;
     public int wallet;
     public int likes;
+    public int totalActivity;
     public String description;
     public String smallPotoId;
     public String bigPotoId;
@@ -20,8 +21,8 @@ public class User extends MyPo implements java.security.Principal {
     //not share
     public String deviceId;
     public String deviceLanguage;
-    public String longitude;
-    public String latitude;
+    public float longitude;
+    public float latitude;
     public String appVersion;
     public int role;
     public int active;
