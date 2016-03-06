@@ -25,7 +25,7 @@ public class User extends MyPo implements java.security.Principal {
     public float latitude;
     public String appVersion;
     public int role;
-    public int active;
+    public int isActive;
     public String lastIp;
 
     public User(){

@@ -1,7 +1,7 @@
 package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.providers.Exceptions;
-import com.chunbao.city.server.api.responses.user.ProfileResponse;
+import com.chunbao.city.server.api.responses.user.UserProfileResponse;
 import com.chunbao.city.server.common.constant.Sql;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
@@ -35,7 +35,7 @@ public class UserResource extends MyResource {
 
         List<Activity> list = ActivityService.getActivityListByUser(Sql.ROWS_PER_PAGE_ACTIVITY_PROFILE,userId);
 
-        ProfileResponse data = new ProfileResponse();
+        UserProfileResponse data = new UserProfileResponse();
         for(Activity element : list){
             data.activityList.add(JsonFactory.makeActivityJson(element));
         }

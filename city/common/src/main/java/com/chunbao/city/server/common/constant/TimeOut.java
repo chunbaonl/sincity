@@ -24,4 +24,5 @@ public class TimeOut {
     public static int listActivity = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
     public static int listActivityByUser = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
     public static int userProfile = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
+    public static int activityDetail = DEFAULT_TIMEOUT_LEVEL_SHORT_A;
 }

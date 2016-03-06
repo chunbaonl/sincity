@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.resources;
 
 
 import com.chunbao.city.server.api.providers.Exceptions;
+import com.chunbao.city.server.api.responses.activity.GetActivityByIdResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
@@ -69,6 +70,24 @@ public class ActivityResource extends MyResource {
         for(Activity element : list){
             data.activityList.add(JsonFactory.makeActivityJson(element));
         }
+
+        return makeJson(data);
+    }
+
+    //detail
+    @GET
+    @RolesAllowed(UserRoles.Guest)
+    @Produces({ CHINESE_JSON_CHARSET })
+    @Path("/detail")
+    public String getActivityById(@PathParam("activityId") final String activityId) {
+
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId");
+
+        Activity element = ActivityService.getActivityById(activityId);
+
+        GetActivityByIdResponse data = new GetActivityByIdResponse();
+
+        data.activity = JsonFactory.makeActivityJson(element);
 
         return makeJson(data);
     }
