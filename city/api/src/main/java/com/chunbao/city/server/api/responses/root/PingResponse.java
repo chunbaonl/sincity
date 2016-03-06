@@ -1,7 +1,7 @@
 package com.chunbao.city.server.api.responses.root;
 
 import com.chunbao.city.server.api.responses.MyResponse;
-import com.chunbao.city.server.common.db.po.User;
+import com.chunbao.city.server.common.db.json.UserJson;
 
 /**
  * Created by anchunyang on 06/03/16.
@@ -9,9 +9,8 @@ import com.chunbao.city.server.common.db.po.User;
  */
 public class PingResponse extends MyResponse {
 
-    public User guest;
+    public UserJson guest;
 
     public PingResponse(){
-        guest = new User();
     }
 }

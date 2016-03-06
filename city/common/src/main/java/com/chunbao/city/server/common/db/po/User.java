@@ -1,19 +1,31 @@
 package com.chunbao.city.server.common.db.po;
 
-import java.util.Set;
+import com.chunbao.city.server.common.constant.UserRoles;
 
 /**
  * Created by anchunyang on 03/03/16.
  * Description:
  */
-public class User implements java.security.Principal {
+public class User extends MyPo implements java.security.Principal {
+    //share
     public String username;
     public String password;
+    public int wallet;
+    public int likes;
+    public String description;
+    public String smallPotoId;
+    public String bigPotoId;
+    public String email;
+    public boolean hasNewMessage;
+    //not share
     public String deviceId;
     public String deviceLanguage;
     public String longitude;
     public String latitude;
-    protected int role;
+    public String appVersion;
+    public int role;
+    public int active;
+    public String lastIp;
 
     public User(){
         setGuestRole();
@@ -24,7 +36,7 @@ public class User implements java.security.Principal {
     }
 
     public void setGuestRole(){
-        role=UserRoles.guestValue;
+        role= UserRoles.guestValue;
     }
     public void setUserRole(){
         role=UserRoles.userValue;

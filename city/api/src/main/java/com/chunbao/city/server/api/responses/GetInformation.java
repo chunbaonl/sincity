@@ -35,13 +35,15 @@ public class GetInformation {
     private static String getReadMeStart() {
         StringBuffer sb = new StringBuffer();
         sb.append("输入header必带参数:").append(StringUtil.getSeparatorDot());
-        sb.append("username:").append(StringUtil.getSeparatorDot());
-        sb.append("password:").append(StringUtil.getSeparatorDot());
-        sb.append("deviceId:").append(StringUtil.getSeparatorDot());
-        sb.append("deviceLanguage:").append(StringUtil.getSeparatorDot());
-        sb.append("longitude:").append(StringUtil.getSeparatorDot());
-        sb.append("latitude:").append(StringUtil.getSeparatorDot());
-        sb.append("完成接口说明:").append(StringUtil.getSeparatorDot());
+        sb.append("username").append(StringUtil.getSeparatorDot());
+        sb.append("password").append(StringUtil.getSeparatorDot());
+        sb.append("deviceId").append(StringUtil.getSeparatorDot());
+        sb.append("deviceLanguage").append(StringUtil.getSeparatorDot());
+        sb.append("longitude").append(StringUtil.getSeparatorDot());
+        sb.append("latitude").append(StringUtil.getSeparatorDot());
+        sb.append("appVersion").append(StringUtil.getSeparatorDot());
+        sb.append("返回对象,guest用户(账户和密码)").append(StringUtil.getSeparatorDot());
+        sb.append("完成接口说明").append(StringUtil.getSeparatorDot());
         sb.append("/start").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
@@ -51,7 +53,7 @@ public class GetInformation {
         StringBuffer sb = new StringBuffer();
         sb.append("首页访问地址").append(StringUtil.getSeparatorDot());
         sb.append("路径: /start").append(StringUtil.getSeparatorDot());
-        sb.append("输入参数无").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数:").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
 }
