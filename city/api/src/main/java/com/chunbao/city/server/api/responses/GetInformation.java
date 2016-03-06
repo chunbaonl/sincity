@@ -3,6 +3,7 @@ package com.chunbao.city.server.api.responses;
 import com.chunbao.city.server.api.responses.activity.GetActivityByIdResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
+import com.chunbao.city.server.api.responses.comment.ListCommentResponse;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
 import com.chunbao.city.server.api.responses.user.UserProfileResponse;
@@ -29,6 +30,8 @@ public class GetInformation {
             timeout = TimeOut.userProfile;
         } else if (myResponse instanceof GetActivityByIdResponse) {
             timeout = TimeOut.activityDetail;
+        } else if (myResponse instanceof ListCommentResponse) {
+            timeout = TimeOut.listComment;
         }
         return timeout;
     }
@@ -47,6 +50,8 @@ public class GetInformation {
             readMe = getReadMeUserProfile();
         } else if (myResponse instanceof GetActivityByIdResponse) {
             readMe = getReadMeActivityDetail();
+        } else if (myResponse instanceof ListCommentResponse) {
+            readMe = getReadMeListComment();
         }
         return readMe;
     }
@@ -74,6 +79,7 @@ public class GetInformation {
         sb.append("/activity/listuser").append(StringUtil.getSeparatorDot());
         sb.append("/user/profile").append(StringUtil.getSeparatorDot());
         sb.append("/activity/detail").append(StringUtil.getSeparatorDot());
+        sb.append("/comment/list").append(StringUtil.getSeparatorDot());
 
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         return sb.toString();
@@ -120,6 +126,15 @@ public class GetInformation {
         sb.append("得到活动细节:").append(StringUtil.getSeparatorDot());
         sb.append("路径: /activity/detail").append(StringUtil.getSeparatorDot());
         sb.append("输入参数: activityId").append(StringUtil.getSeparatorDot());
+        sb.append("        ==========").append(StringUtil.getSeparatorDot());
+        return sb.toString();
+    }
+
+    private static String getReadMeListComment() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("得到活动评论:").append(StringUtil.getSeparatorDot());
+        sb.append("路径: /comment/list").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数: page,activityId").append(StringUtil.getSeparatorDot());
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }

@@ -42,7 +42,7 @@ public class ActivityResource extends MyResource {
     public String getActivityList(@PathParam("page") @DefaultValue("1") final int page,
                                   @PathParam("categoryId") final String categoryId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(categoryId),"Invalid categoryId");
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(categoryId),"Invalid categoryId="+categoryId);
 
         List<Activity> list = ActivityService.getActivityList(page,categoryId,getUser().id);
 
@@ -62,7 +62,7 @@ public class ActivityResource extends MyResource {
     public String getActivityListByUser(@PathParam("page") @DefaultValue("1") final int page,
                                   @PathParam("userId") final String userId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId");
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
         List<Activity> list = ActivityService.getActivityListByUser(page,userId);
 
@@ -81,7 +81,7 @@ public class ActivityResource extends MyResource {
     @Path("/detail")
     public String getActivityById(@PathParam("activityId") final String activityId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId");
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
 
         Activity element = ActivityService.getActivityById(activityId);
 

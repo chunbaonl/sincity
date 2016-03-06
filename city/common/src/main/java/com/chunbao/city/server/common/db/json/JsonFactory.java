@@ -2,6 +2,7 @@ package com.chunbao.city.server.common.db.json;
 
 import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.db.po.Category;
+import com.chunbao.city.server.common.db.po.Comment;
 import com.chunbao.city.server.common.db.po.ServerInfo;
 import com.chunbao.city.server.common.db.po.User;
 
@@ -70,6 +71,18 @@ public class JsonFactory {
         newJson.totalVisitors=oldPo.totalVisitors;
         newJson.longitude=oldPo.longitude;
         newJson.latitude=oldPo.latitude;
+        return newJson;
+    }
+
+    public static CommentJson makeCommentJson(Comment oldPo){
+        CommentJson newJson = new CommentJson();
+        newJson.id=oldPo.id;
+        newJson.updateDate=oldPo.updateDate;
+        newJson.userId=oldPo.userId;
+        newJson.activityId=oldPo.activityId;
+        newJson.type=oldPo.type;
+        newJson.message=oldPo.message;
+        newJson.isRead=oldPo.isRead;
         return newJson;
     }
 }

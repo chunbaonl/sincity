@@ -6,8 +6,8 @@ package com.chunbao.city.server.common.db.json;
  */
 public class CommentJson extends MyJson{
     //share
-    public String serId;
-    public String commentId;
+    public String userId;
+    public String activityId;
     public int type;
     public String message;
     public boolean isRead;

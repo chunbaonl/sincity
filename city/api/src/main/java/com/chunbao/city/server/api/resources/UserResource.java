@@ -31,7 +31,7 @@ public class UserResource extends MyResource {
     @Path("/profile")
     public String getActivityList(@PathParam("userId") final String userId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId");
+        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
         List<Activity> list = ActivityService.getActivityListByUser(Sql.ROWS_PER_PAGE_ACTIVITY_PROFILE,userId);
 

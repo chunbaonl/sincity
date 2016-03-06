@@ -6,8 +6,8 @@ package com.chunbao.city.server.common.db.po;
  */
 public class Comment extends MyPo {
     //share
-    public String serId;
-    public String commentId;
+    public String userId;
+    public String activityId;
     public int type;
     public String message;
     public boolean isRead;
