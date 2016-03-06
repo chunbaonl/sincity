@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.providers;
 
 import com.chunbao.city.server.api.resources.MyResource;
 import com.chunbao.city.server.common.constant.AdminUser;
+import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.Server;
 import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.constant.UserRoles;
@@ -88,13 +89,13 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
     private User getAndUpdateUser(final ContainerRequestContext containerRequest){
         final OAuthServerRequest request = new OAuthServerRequest(containerRequest);
         User user = new User();
-        user.username= StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_USERNAME));
-        user.password=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_PASSWORD));
-        user.deviceId=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_ID));
-        user.deviceLanguage=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_LANGUAGE));
-        user.longitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE)));
-        user.latitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE)));
-        user.appVersion=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_APP_VERSION));
+        user.username= StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_USERNAME));
+        user.password=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_PASSWORD));
+        user.deviceId=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_DEVICE_ID));
+        user.deviceLanguage=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_DEVICE_LANGUAGE));
+        user.longitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_LONGITUDE)));
+        user.latitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_LATITUDE)));
+        user.appVersion=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_APP_VERSION));
 
         //如果用户不能存在
         //throw new WebApplicationException(401);

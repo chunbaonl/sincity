@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
+import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.db.po.Category;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
@@ -13,11 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class RootResource extends MyResource {
 
     @GET
     @PermitAll
-    @Produces({ CHINESE_JSON_CHARSET})
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
     public String ping() {
         PingResponse ping= new PingResponse();
         ping.guest = JsonFactory.makeUserJson(UserService.getGuest());
@@ -40,7 +39,7 @@ public class RootResource extends MyResource {
     //use log in user to get the list.
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET})
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
     @Path("/start")
     public String getStart() {
         LoadPageResponse loadPage = new LoadPageResponse();

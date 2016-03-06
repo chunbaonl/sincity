@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.providers.Exceptions;
 import com.chunbao.city.server.api.responses.user.UserProfileResponse;
+import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.Sql;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
@@ -27,7 +28,7 @@ public class UserResource extends MyResource {
     //show the homepage for user.
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET })
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/profile")
     public String getActivityList(@PathParam("userId") final String userId) {
 

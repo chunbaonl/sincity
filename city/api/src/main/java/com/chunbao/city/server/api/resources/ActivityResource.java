@@ -6,6 +6,7 @@ import com.chunbao.city.server.api.responses.activity.GetActivityByIdResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
+import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
 import com.chunbao.city.server.common.db.po.Activity;
@@ -37,7 +38,7 @@ public class ActivityResource extends MyResource {
     //list the activity for one category, if the user has the right to view it.
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET })
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/list")
     public String getActivityList(@PathParam("page") @DefaultValue("1") final int page,
                                   @PathParam("categoryId") final String categoryId) {
@@ -57,7 +58,7 @@ public class ActivityResource extends MyResource {
     //list the activity for one user
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET })
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/listuser")
     public String getActivityListByUser(@PathParam("page") @DefaultValue("1") final int page,
                                   @PathParam("userId") final String userId) {
@@ -77,7 +78,7 @@ public class ActivityResource extends MyResource {
     //detail
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET })
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/detail")
     public String getActivityById(@PathParam("activityId") final String activityId) {
 

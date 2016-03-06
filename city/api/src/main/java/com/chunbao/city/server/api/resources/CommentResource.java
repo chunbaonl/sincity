@@ -2,6 +2,7 @@ package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.providers.Exceptions;
 import com.chunbao.city.server.api.responses.comment.ListCommentResponse;
+import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
 import com.chunbao.city.server.common.db.po.Comment;
@@ -30,7 +31,7 @@ public class CommentResource extends MyResource {
     //list the comment for activity, if the user has the right to view it.
     @GET
     @RolesAllowed(UserRoles.Guest)
-    @Produces({ CHINESE_JSON_CHARSET })
+    @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/list")
     public String getCommentList(@PathParam("page") @DefaultValue("1") final int page,
                                  @PathParam("activityId") final String activityId,
