@@ -1,7 +1,8 @@
 package com.chunbao.city.server.api.providers;
 
 import com.chunbao.city.server.api.resources.MyResource;
-import com.chunbao.city.server.common.db.po.ApplicationVariables;
+import com.chunbao.city.server.common.constant.AdminUser;
+import com.chunbao.city.server.common.constant.Server;
 import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.db.po.UserRoles;
 import com.chunbao.city.server.common.util.Utils;
@@ -96,13 +97,13 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
         //throw new WebApplicationException(401);
         if(Utils.isNullOrEmpty(user.username) || Utils.isNullOrEmpty(user.password)){
             //for ping only, the rest denied
-            if(!ApplicationVariables.API_PING_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL().getPath())){
+            if(!Server.API_PING_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL().getPath())){
                 throw new ForbiddenException("Invalid consumer");
             }
         }
         //admin check the device id
         if(user.hasRole(UserRoles.Admin)){
-            if(!ApplicationVariables.ADMIN_DEVICE_ID.equals(user.deviceId)){
+            if(!AdminUser.ADMIN_DEVICE_ID.equals(user.deviceId)){
                 throw new WebApplicationException(401);
             }
         }

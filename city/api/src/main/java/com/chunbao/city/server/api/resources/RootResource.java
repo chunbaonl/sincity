@@ -2,7 +2,6 @@ package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
-import com.chunbao.city.server.common.db.po.ApplicationVariables;
 import com.chunbao.city.server.common.db.po.UserRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class RootResource extends MyResource {
 
     @GET
     @PermitAll
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON + ";charset=" + "UTF-8"})
     public String ping() {
         PingResponse ping= new PingResponse();
         return makeJson(ping);
@@ -34,12 +33,11 @@ public class RootResource extends MyResource {
     @GET
     @RolesAllowed(UserRoles.Admin)
     @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON + ";charset=" + "UTF-8"})
     @Path("/start")
     public String getApplicationVariables() {
-        timeout = ApplicationVariables.expiration_start;
-        LoadPageResponse loadPage = new LoadPageResponse();
 
+        LoadPageResponse loadPage = new LoadPageResponse();
         return makeJson(loadPage);
     }
 }

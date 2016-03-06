@@ -38,11 +38,10 @@ public class MyResource {
     @Context
     protected HttpServletRequest request;
 
-    public int timeout;
     private User user;
 
     public String makeJson(MyResponse myResponse){
-        StandardResponse response = new StandardResponse(timeout,getUser().hasNewMessage(),myResponse);
+        StandardResponse response = new StandardResponse(getUser().hasNewMessage(),myResponse);
         String data = Utils.toJson(response);
         mLogger.info(data);
         return data;

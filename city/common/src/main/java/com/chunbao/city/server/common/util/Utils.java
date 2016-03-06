@@ -15,7 +15,7 @@ import java.util.UUID;
 public class Utils {
 
     private static final Logger mLogger = LoggerFactory.getLogger(Utils.class);
-
+    private static ObjectMapper mapper = new ObjectMapper();
     /**
      * Get specific date from string.
      *
@@ -70,7 +70,7 @@ public class Utils {
      */
     public static String toJson(Object o) {
         String json = "";
-        ObjectMapper mapper = new ObjectMapper();
+
         try {
             json = mapper.writeValueAsString(o);
         } catch (IOException e) {

@@ -8,12 +8,12 @@ public class StandardResponse {
     public String readMe;
     public int timeout=0;
     public boolean hasMessage;
-    public MyResponse myResponse;
+    public MyResponse data;
 
-    public StandardResponse(int timeout,boolean hasMessage,MyResponse myResponse){
-        this.readMe = myResponse.getReadMe();
-        this.timeout=timeout;
+    public StandardResponse(final boolean hasMessage,final MyResponse myResponse){
+        this.readMe = GetInformation.getReadMe(myResponse);
+        this.timeout=GetInformation.getTimeout(myResponse);
         this.hasMessage=hasMessage;
-        this.myResponse=myResponse;
+        this.data=myResponse;
     }
 }
