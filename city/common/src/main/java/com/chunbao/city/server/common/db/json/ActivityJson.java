@@ -21,4 +21,10 @@ public class ActivityJson extends MyJson {
     public int totalVisitors;
     public float longitude;
     public float latitude;
+    //是否喜欢
+    public boolean isLiked;
+    //是否收藏
+    public boolean isSaved;
+    //是否参加
+    public boolean isAttended;
 }
