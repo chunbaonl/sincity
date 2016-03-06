@@ -5,7 +5,7 @@ import com.chunbao.city.server.common.constant.AdminUser;
 import com.chunbao.city.server.common.constant.Server;
 import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.db.po.UserRoles;
-import com.chunbao.city.server.common.util.Utils;
+import com.chunbao.city.server.common.util.StringUtil;
 import org.glassfish.jersey.oauth1.signature.OAuth1Signature;
 import org.glassfish.jersey.server.oauth1.internal.OAuthServerRequest;
 import org.slf4j.Logger;
@@ -86,16 +86,16 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
     private User getAndUpdateUser(final ContainerRequestContext containerRequest){
         final OAuthServerRequest request = new OAuthServerRequest(containerRequest);
         User user = new User();
-        user.username=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_USERNAME));
-        user.password=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_PASSWORD));
-        user.deviceId=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_ID));
-        user.deviceLanguage=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_LANGUAGE));
-        user.longitude=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE));
-        user.latitude=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE));
+        user.username= StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_USERNAME));
+        user.password=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_PASSWORD));
+        user.deviceId=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_ID));
+        user.deviceLanguage=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_LANGUAGE));
+        user.longitude=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE));
+        user.latitude=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE));
 
         //如果用户不能存在
         //throw new WebApplicationException(401);
-        if(Utils.isNullOrEmpty(user.username) || Utils.isNullOrEmpty(user.password)){
+        if(StringUtil.isNullOrEmpty(user.username) || StringUtil.isNullOrEmpty(user.password)){
             //for ping only, the rest denied
             if(!Server.API_PING_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL().getPath())){
                 throw new ForbiddenException("Invalid consumer");

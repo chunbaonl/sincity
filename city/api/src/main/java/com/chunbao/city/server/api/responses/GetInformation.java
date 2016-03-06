@@ -3,7 +3,7 @@ package com.chunbao.city.server.api.responses;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
 import com.chunbao.city.server.common.constant.TimeOut;
-import com.chunbao.city.server.common.util.Utils;
+import com.chunbao.city.server.common.util.StringUtil;
 
 /**
  * Created by anchunyang on 06/03/16.
@@ -34,24 +34,24 @@ public class GetInformation {
     //override
     private static String getReadMeStart() {
         StringBuffer sb = new StringBuffer();
-        sb.append("输入header必带参数:").append(Utils.getSeparatorDot());
-        sb.append("username:").append(Utils.getSeparatorDot());
-        sb.append("password:").append(Utils.getSeparatorDot());
-        sb.append("deviceId:").append(Utils.getSeparatorDot());
-        sb.append("deviceLanguage:").append(Utils.getSeparatorDot());
-        sb.append("longitude:").append(Utils.getSeparatorDot());
-        sb.append("latitude:").append(Utils.getSeparatorDot());
-        sb.append("完成接口说明:").append(Utils.getSeparatorDot());
-        sb.append("/start").append(Utils.getSeparatorDot());
+        sb.append("输入header必带参数:").append(StringUtil.getSeparatorDot());
+        sb.append("username:").append(StringUtil.getSeparatorDot());
+        sb.append("password:").append(StringUtil.getSeparatorDot());
+        sb.append("deviceId:").append(StringUtil.getSeparatorDot());
+        sb.append("deviceLanguage:").append(StringUtil.getSeparatorDot());
+        sb.append("longitude:").append(StringUtil.getSeparatorDot());
+        sb.append("latitude:").append(StringUtil.getSeparatorDot());
+        sb.append("完成接口说明:").append(StringUtil.getSeparatorDot());
+        sb.append("/start").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
     //override
 
     private static String getReadMeLoadPage() {
         StringBuffer sb = new StringBuffer();
-        sb.append("首页访问地址").append(Utils.getSeparatorDot());
-        sb.append("路径: /start").append(Utils.getSeparatorDot());
-        sb.append("输入参数无").append(Utils.getSeparatorDot());
+        sb.append("首页访问地址").append(StringUtil.getSeparatorDot());
+        sb.append("路径: /start").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数无").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
 }

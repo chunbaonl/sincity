@@ -1,7 +1,7 @@
 package com.chunbao.city.server.common.db.po;
 
 
-import com.chunbao.city.server.common.util.Utils;
+import com.chunbao.city.server.common.util.UUIDUtil;
 
 /**
  * Created by anchunyang on 03/03/16.
@@ -9,7 +9,7 @@ import com.chunbao.city.server.common.util.Utils;
  */
 public class Category {
     public Category(){
-        categoryId = Utils.generate();
+        categoryId = UUIDUtil.generate();
         nameCn = "";
         nameNl= "";
         nameEn = "";

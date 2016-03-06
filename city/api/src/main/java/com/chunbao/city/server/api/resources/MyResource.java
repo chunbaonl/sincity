@@ -3,14 +3,12 @@ package com.chunbao.city.server.api.resources;
 import com.chunbao.city.server.api.responses.MyResponse;
 import com.chunbao.city.server.api.responses.StandardResponse;
 import com.chunbao.city.server.common.db.po.User;
-import com.chunbao.city.server.common.util.Utils;
-import org.glassfish.jersey.server.oauth1.internal.OAuthServerRequest;
+import com.chunbao.city.server.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 
@@ -42,7 +40,7 @@ public class MyResource {
 
     public String makeJson(MyResponse myResponse){
         StandardResponse response = new StandardResponse(getUser().hasNewMessage(),myResponse);
-        String data = Utils.toJson(response);
+        String data = StringUtil.toJson(response);
         mLogger.info(data);
         return data;
     }
