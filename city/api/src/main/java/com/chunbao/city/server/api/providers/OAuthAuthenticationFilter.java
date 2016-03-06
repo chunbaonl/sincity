@@ -47,26 +47,14 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
         doOauth(containerRequest);
         //read parameter
         User user = getAndUpdateUser(containerRequest);
-        if(Utils.isNullOrEmpty(user.username) || Utils.isNullOrEmpty(user.password)){
-            //for ping only, the rest denied
-            if(!ApplicationVariables.API_SERVER_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL())){
-                throw new ForbiddenException("Invalid consumer");
-            }
-        }
-        //admin check the device id
-        if(user.hasRole(UserRoles.Admin)){
-            if(!ApplicationVariables.ADMIN_DEVICE_ID.equals(user.deviceId)){
-                throw new WebApplicationException(401);
-            }
-        }
-        
-        //临时设置
-        user.role = UserRoles.adminValue;
+        //临时设置,给用户最高权限
+        user.setAdminRole();
         containerRequest.setSecurityContext(new ApiSecurityContext(user));
     }
 
     private void log(final ContainerRequestContext containerRequest){
-
+        String requestUrl = (new OAuthServerRequest(containerRequest)).getRequestURL().getPath();
+        mLogger.info(requestUrl);
     }
 
     private void doOauth(final ContainerRequestContext containerRequest){
@@ -100,11 +88,24 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
         user.username=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_USERNAME));
         user.password=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_PASSWORD));
         user.deviceId=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_ID));
+        user.deviceLanguage=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_DEVICE_LANGUAGE));
         user.longitude=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LONGITUDE));
         user.latitude=Utils.getFirstValueFromStringArray(request.getHeaderValues(MyResource.PARAMETER_NAME_LATITUDE));
 
         //如果用户不能存在
         //throw new WebApplicationException(401);
+        if(Utils.isNullOrEmpty(user.username) || Utils.isNullOrEmpty(user.password)){
+            //for ping only, the rest denied
+            if(!ApplicationVariables.API_PING_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL().getPath())){
+                throw new ForbiddenException("Invalid consumer");
+            }
+        }
+        //admin check the device id
+        if(user.hasRole(UserRoles.Admin)){
+            if(!ApplicationVariables.ADMIN_DEVICE_ID.equals(user.deviceId)){
+                throw new WebApplicationException(401);
+            }
+        }
         //更新用户信息,经纬度,登陆时间,设备信息
 
         return user;

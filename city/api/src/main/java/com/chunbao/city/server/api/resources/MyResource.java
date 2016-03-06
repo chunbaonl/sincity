@@ -1,6 +1,7 @@
 package com.chunbao.city.server.api.resources;
 
 import com.chunbao.city.server.api.responses.MyResponse;
+import com.chunbao.city.server.api.responses.StandardResponse;
 import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.util.Utils;
 import org.glassfish.jersey.server.oauth1.internal.OAuthServerRequest;
@@ -24,6 +25,7 @@ public class MyResource {
     public final static String PARAMETER_NAME_USERNAME = "username";
     public final static String PARAMETER_NAME_PASSWORD = "password";
     public final static String PARAMETER_NAME_DEVICE_ID = "deviceId";
+    public final static String PARAMETER_NAME_DEVICE_LANGUAGE = "deviceLanguage";
     public final static String PARAMETER_NAME_LONGITUDE = "longitude";
     public final static String PARAMETER_NAME_LATITUDE = "latitude";
 
@@ -37,26 +39,17 @@ public class MyResource {
     protected HttpServletRequest request;
 
     public int timeout;
-    public String readMe;
-    public User user;
+    private User user;
 
-    public String makeJson(Object object){
-        MyResponse response = new MyResponse(readMe,timeout,getUser().hasNewMessage(),object);
+    public String makeJson(MyResponse myResponse){
+        StandardResponse response = new StandardResponse(timeout,getUser().hasNewMessage(),myResponse);
         String data = Utils.toJson(response);
         mLogger.info(data);
         return data;
     }
 
     protected User getUser(){
-        User user = (User)mSecurityContext.getUserPrincipal();
+        user = (User)mSecurityContext.getUserPrincipal();
         return user;
-    }
-
-    public String readMeStart(){
-        StringBuffer sb = new StringBuffer();
-        sb.append("首页访问地址").append(Utils.getSeparatorDot());
-        sb.append("路径: /start").append(Utils.getSeparatorDot());
-        sb.append("输入参数无").append(Utils.getSeparatorDot());
-        return sb.toString();
     }
 }

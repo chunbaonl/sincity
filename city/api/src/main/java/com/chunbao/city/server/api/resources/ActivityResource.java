@@ -1,7 +1,7 @@
 package com.chunbao.city.server.api.resources;
 
 
-import com.chunbao.city.server.api.responses.ActivityList;
+import com.chunbao.city.server.api.responses.activity.ActivityList;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.DefaultValue;
@@ -24,6 +24,6 @@ public class ActivityResource extends MyResource {
     public String getApplicationVariables(@PathParam("categoryId") final String categoryId,
                                           @PathParam("page") @DefaultValue("1") final int page) {
         ActivityList activityList = new ActivityList();
-        return makeJson(activityList);
+        return "";//makeJson(activityList);
     }
 }

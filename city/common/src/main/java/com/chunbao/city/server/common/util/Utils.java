@@ -122,4 +122,15 @@ public class Utils {
     public static String getSeparatorDot() {
         return ",";
     }
+
+    public static <T> T readAsObjectOf(Class<T> clazz, String value){
+        T o=null;
+        try {
+            ObjectMapper MAPPER = new ObjectMapper();
+            o = MAPPER.readValue(value, clazz);
+        } catch (Exception e) {
+            mLogger.error("{}, {}", e.getMessage(), e.fillInStackTrace());
+        }
+        return o;
+    }
 }

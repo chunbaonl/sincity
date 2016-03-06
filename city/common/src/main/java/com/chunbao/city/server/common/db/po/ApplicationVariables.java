@@ -6,7 +6,8 @@ package com.chunbao.city.server.common.db.po;
  */
 public class ApplicationVariables {
     public final static int DEFAULT_TIMEOUT = 10;
-    public final static String API_SERVER_URL="http://api.sincity.com/";
+    public final static String API_SERVER_URL="http://sincityapi.eu-west-1.elasticbeanstalk.com/";
+    public final static String API_PING_URL="/";
     //管理设备id
     public final static String ADMIN_DEVICE_ID="090939";
 
