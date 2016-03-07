@@ -1,7 +1,9 @@
 package com.chunbao.city.server.common.db.json;
 
 import com.chunbao.city.server.common.db.po.Activity;
+import com.chunbao.city.server.common.db.po.ActivityOpinion;
 import com.chunbao.city.server.common.db.po.Category;
+import com.chunbao.city.server.common.db.po.City;
 import com.chunbao.city.server.common.db.po.Comment;
 import com.chunbao.city.server.common.db.po.ServerInfo;
 import com.chunbao.city.server.common.db.po.User;
@@ -17,7 +19,6 @@ public class JsonFactory {
     public static UserJson makeUserJson(User oldPo){
         UserJson newJson = new UserJson();
         newJson.id=oldPo.id;
-        newJson.updateDate=oldPo.updateDate;
         newJson.username=oldPo.username;
         newJson.password=oldPo.password;
         newJson.wallet=oldPo.wallet;
@@ -34,7 +35,6 @@ public class JsonFactory {
     public static CategoryJson makeCategoryJson(Category oldPo){
         CategoryJson newJson = new CategoryJson();
         newJson.id=oldPo.id;
-        newJson.updateDate=oldPo.updateDate;
         newJson.nameCn=oldPo.nameCn;
         newJson.nameNl=oldPo.nameNl;
         newJson.nameEn=oldPo.nameEn;
@@ -57,8 +57,8 @@ public class JsonFactory {
         ActivityJson newJson = new ActivityJson();
         newJson.id=oldPo.id;
         newJson.updateDate=oldPo.updateDate;
-        newJson.userId=oldPo.userId;
-        newJson.name=oldPo.name;
+        newJson.ownerName=oldPo.ownerName;
+        newJson.title=oldPo.title;
         newJson.description=oldPo.description;
         newJson.smallPotoId=oldPo.smallPotoId;
         newJson.bigPotoId=oldPo.bigPotoId;
@@ -71,6 +71,7 @@ public class JsonFactory {
         newJson.totalVisitors=oldPo.totalVisitors;
         newJson.longitude=oldPo.longitude;
         newJson.latitude=oldPo.latitude;
+        newJson.cityId=oldPo.cityId;
         return newJson;
     }
 
@@ -85,4 +86,23 @@ public class JsonFactory {
         newJson.isRead=oldPo.isRead;
         return newJson;
     }
+
+    public static CityJson makeCityJson(City oldPo){
+        CityJson newJson = new CityJson();
+        newJson.id=oldPo.id;
+        newJson.nameCn=oldPo.nameCn;
+        newJson.nameNl=oldPo.nameNl;
+        newJson.nameEn=oldPo.nameEn;
+        newJson.position=oldPo.position;
+        return newJson;
+    }
+    public static ActivityOpinionJson makeActivityOpinionJson(ActivityOpinion oldPo){
+        ActivityOpinionJson newJson = new ActivityOpinionJson();
+        newJson.id=oldPo.id;
+        newJson.isAttended=oldPo.isAttended;
+        newJson.isLiked=oldPo.isLiked;
+        newJson.isSaved=oldPo.isSaved;
+        return newJson;
+    }
+
 }

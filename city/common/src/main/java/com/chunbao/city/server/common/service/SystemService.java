@@ -8,7 +8,8 @@ import com.chunbao.city.server.common.db.po.ServerInfo;
  * Description:
  */
 public class SystemService extends MyService{
-    public static ServerInfo getServerInfo(final String userId){
+
+    public static ServerInfo getServerInfo(){
         ServerInfo serverInfo = new ServerInfo();
         serverInfo.loadText = Server.DEFAULT_BROADCAST_MESSAGE;
         serverInfo.picServerUrl = Server.PIC_SERVER_URL;

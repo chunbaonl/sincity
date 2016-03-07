@@ -74,7 +74,9 @@ public class GetInformation {
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         sb.append("完成接口").append(StringUtil.getSeparatorDot());
         sb.append("/").append(StringUtil.getSeparatorDot());
-        sb.append("/start").append(StringUtil.getSeparatorDot());
+        sb.append("/system").append(StringUtil.getSeparatorDot());
+        sb.append("/category/list").append(StringUtil.getSeparatorDot());
+        sb.append("/city/list").append(StringUtil.getSeparatorDot());
         sb.append("/activity/list").append(StringUtil.getSeparatorDot());
         sb.append("/activity/listuser").append(StringUtil.getSeparatorDot());
         sb.append("/user/profile").append(StringUtil.getSeparatorDot());

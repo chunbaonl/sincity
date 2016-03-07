@@ -21,8 +21,6 @@ public class MyResource {
 
     private static final Logger mLogger = LoggerFactory.getLogger(MyResource.class);
 
-
-
     @Context
     protected SecurityContext mSecurityContext;
 

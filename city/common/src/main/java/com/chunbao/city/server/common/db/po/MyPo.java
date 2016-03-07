@@ -9,8 +9,8 @@ import java.util.Date;
 public class MyPo {
     //share
     public String id;
-    public Date updateDate;
     //not share
+    public Date updateDate;
     public Date createDate;
     public boolean isDeleted;
     public boolean isTask;

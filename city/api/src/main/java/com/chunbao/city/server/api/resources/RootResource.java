@@ -3,10 +3,8 @@ package com.chunbao.city.server.api.resources;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
 import com.chunbao.city.server.common.constant.HttpRequestConstant;
-import com.chunbao.city.server.common.db.po.Category;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
-import com.chunbao.city.server.common.service.CategoryService;
 import com.chunbao.city.server.common.service.SystemService;
 import com.chunbao.city.server.common.service.UserService;
 import org.slf4j.Logger;
@@ -17,7 +15,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import java.util.List;
 
 /**
  * The base resource for the API.
@@ -40,14 +37,10 @@ public class RootResource extends MyResource {
     @GET
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
-    @Path("/start")
-    public String getStart() {
+    @Path("/system")
+    public String getSystem() {
         LoadPageResponse loadPage = new LoadPageResponse();
-        loadPage.serverInfoJson = JsonFactory.makeServerInfoJson(SystemService.getServerInfo(getUser().id));
-        List<Category> list = CategoryService.getCategoryListById(getUser().id);
-        for(Category category : list){
-            loadPage.categoryList.add(JsonFactory.makeCategoryJson(category));
-        }
+        loadPage.serverInfoJson = JsonFactory.makeServerInfoJson(SystemService.getServerInfo());
         return makeJson(loadPage);
     }
 }

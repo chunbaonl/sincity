@@ -8,8 +8,8 @@ import java.util.Date;
  */
 public class Activity extends MyPo {
     //share
-    public String userId;
-    public String name;
+    public String ownerName;
+    public String title;
     public String description;
     public String smallPotoId;
     public String bigPotoId;
@@ -22,4 +22,5 @@ public class Activity extends MyPo {
     public int totalVisitors;
     public float longitude;
     public float latitude;
+    public String cityId;
 }

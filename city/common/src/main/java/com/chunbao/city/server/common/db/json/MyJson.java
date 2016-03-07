@@ -8,5 +8,4 @@ import java.util.Date;
  */
 public class MyJson {
     public String id;
-    public Date updateDate;
 }

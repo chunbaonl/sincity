@@ -16,7 +16,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import java.util.List;
 
@@ -33,14 +33,12 @@ public class CommentResource extends MyResource {
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/list")
-    public String getCommentList(@PathParam("page") @DefaultValue("1") final int page,
-                                 @PathParam("activityId") final String activityId,
-                                 @PathParam("userId") final String userId) {
+    public String getCommentList(@QueryParam("page") @DefaultValue("1") final int page,
+                                 @QueryParam("activityId") final String activityId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
-        List<Comment> list = CommentService.getCommentList(page,activityId,getUser().id);
+        List<Comment> list = CommentService.getCommentList(page,activityId);
 
         ListCommentResponse data = new ListCommentResponse();
         for(Comment element : list){

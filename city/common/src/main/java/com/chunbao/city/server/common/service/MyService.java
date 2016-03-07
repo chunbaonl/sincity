@@ -5,4 +5,6 @@ package com.chunbao.city.server.common.service;
  * Description:
  */
 public class MyService {
+
+
 }

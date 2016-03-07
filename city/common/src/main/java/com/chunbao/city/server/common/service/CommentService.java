@@ -16,12 +16,10 @@ public class CommentService extends MyService {
      * get activity list, based on the user and activity,
      * @param page
      * @param activityId
-     * @param userId authority check
      * @return
      */
     public static List<Comment> getCommentList(final int page,
-                                               final String activityId,
-                                               final String userId){
+                                               final String activityId){
         ArrayList<Comment> list = new ArrayList<>();
         Activity element;
         for(int i=0;i<20;i++){

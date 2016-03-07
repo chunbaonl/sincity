@@ -16,15 +16,15 @@ public class ActivityService extends MyService {
      * get activity list, based on the user and category
      * @param page
      * @param categoryId
-     * @param userId
+     * @param cityId
      * @return
      */
     public static List<Activity> getActivityList(final int page,
                                                  final String categoryId,
-                                                 final String userId){
+                                                 final String cityId){
         ArrayList<Activity> list = new ArrayList<>();
         Activity element;
-        for(int i=0;i<50;i++){
+        for(int i=0;i<10;i++){
             list.add(makeActivity(i));
         }
         return list;
@@ -40,7 +40,7 @@ public class ActivityService extends MyService {
                                                  final String userId){
         ArrayList<Activity> list = new ArrayList<>();
         Activity element;
-        for(int i=0;i<50;i++){
+        for(int i=0;i<10;i++){
             list.add(makeActivity(i));
         }
         return list;
@@ -57,13 +57,13 @@ public class ActivityService extends MyService {
 
     private static Activity makeActivity(int i){
         Activity element =new Activity();
-        element.name = "活动"+i;
+        element.title = "活动"+i;
         element.bigPotoId = "/pic-api-test/2016-03-07_08-01-12_5BFDEA90-E557-4C84-9003-F8E203BB6F3D.jpg";
         element.description = "描述" + i;
         element.costPerDay = 100 - i;
         element.totalComments = 100 - i;
         element.totalLikes = 20 - i;
-        element.userId = "待定";
+        element.ownerName = "Micheal Jackson";
         return element;
     }
 }

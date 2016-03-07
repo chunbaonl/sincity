@@ -5,15 +5,13 @@ import com.chunbao.city.server.api.providers.Exceptions;
 import com.chunbao.city.server.api.responses.activity.GetActivityByIdResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
-import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
 import com.chunbao.city.server.common.db.po.Activity;
-import com.chunbao.city.server.common.db.po.Category;
+import com.chunbao.city.server.common.db.po.ActivityOpinion;
 import com.chunbao.city.server.common.service.ActivityService;
-import com.chunbao.city.server.common.service.CategoryService;
-import com.chunbao.city.server.common.service.SystemService;
+import com.chunbao.city.server.common.service.OpinionService;
 import com.chunbao.city.server.common.util.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +20,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -40,14 +39,16 @@ public class ActivityResource extends MyResource {
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/list")
-    public String getActivityList(@PathParam("page") @DefaultValue("1") final int page,
-                                  @PathParam("categoryId") final String categoryId) {
+    public String getActivityList(@QueryParam("page") @DefaultValue("1") final int page,
+                                  @QueryParam("categoryId") final String categoryId,
+                                  @QueryParam("cityId") final String cityId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(categoryId),"Invalid categoryId="+categoryId);
 
-        List<Activity> list = ActivityService.getActivityList(page,categoryId,getUser().id);
+        List<Activity> list = ActivityService.getActivityList(page,categoryId,cityId);
 
         ListActivityResponse data = new ListActivityResponse();
+
         for(Activity element : list){
             data.activityList.add(JsonFactory.makeActivityJson(element));
         }
@@ -60,14 +61,15 @@ public class ActivityResource extends MyResource {
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/listuser")
-    public String getActivityListByUser(@PathParam("page") @DefaultValue("1") final int page,
-                                  @PathParam("userId") final String userId) {
+    public String getActivityListByUser(@QueryParam("page") @DefaultValue("1") final int page,
+                                  @QueryParam("userId") final String userId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
         List<Activity> list = ActivityService.getActivityListByUser(page,userId);
 
         ListActivityByUserResponse data = new ListActivityByUserResponse();
+
         for(Activity element : list){
             data.activityList.add(JsonFactory.makeActivityJson(element));
         }
@@ -80,15 +82,17 @@ public class ActivityResource extends MyResource {
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/detail")
-    public String getActivityById(@PathParam("activityId") final String activityId) {
+    public String getCommentById(@QueryParam("activityId") final String activityId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
 
-        Activity element = ActivityService.getActivityById(activityId);
-
         GetActivityByIdResponse data = new GetActivityByIdResponse();
 
+        Activity element = ActivityService.getActivityById(activityId);
         data.activity = JsonFactory.makeActivityJson(element);
+
+        ActivityOpinion activityOpinion = OpinionService.getActivityOpinion(getUser().id,activityId);
+        data.opinion = JsonFactory.makeActivityOpinionJson(activityOpinion);
 
         return makeJson(data);
     }

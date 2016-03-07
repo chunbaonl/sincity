@@ -7,8 +7,8 @@ import java.util.Date;
  * Description:
  */
 public class ActivityJson extends MyJson {
-    public String userId;
-    public String name;
+    public String ownerName;
+    public String title;
     public String description;
     public String smallPotoId;
     public String bigPotoId;
@@ -19,12 +19,8 @@ public class ActivityJson extends MyJson {
     public int totalComments;
     public int totalLikes;
     public int totalVisitors;
+    public Date updateDate;
     public float longitude;
     public float latitude;
-    //是否喜欢
-    public boolean isLiked;
-    //是否收藏
-    public boolean isSaved;
-    //是否参加
-    public boolean isAttended;
+    public String cityId;
 }

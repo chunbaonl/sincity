@@ -3,6 +3,7 @@ package com.chunbao.city.server.api.responses.root;
 
 import com.chunbao.city.server.api.responses.MyResponse;
 import com.chunbao.city.server.common.db.json.CategoryJson;
+import com.chunbao.city.server.common.db.json.CityJson;
 import com.chunbao.city.server.common.db.json.ServerInfoJson;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ import java.util.List;
  */
 public class LoadPageResponse extends MyResponse {
     public ServerInfoJson serverInfoJson;
-    public List<CategoryJson> categoryList;
+
     public LoadPageResponse(){
-        categoryList = new ArrayList<CategoryJson>();
     }
 }

@@ -6,6 +6,7 @@ import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.Sql;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
+import com.chunbao.city.server.common.db.json.UserOpinionJson;
 import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.service.ActivityService;
 import com.chunbao.city.server.common.service.UserService;
@@ -14,7 +15,7 @@ import com.chunbao.city.server.common.util.UUIDUtil;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import java.util.List;
 
@@ -30,17 +31,15 @@ public class UserResource extends MyResource {
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
     @Path("/profile")
-    public String getActivityList(@PathParam("userId") final String userId) {
+    public String getActivityList(@QueryParam("userId") final String userId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
-        List<Activity> list = ActivityService.getActivityListByUser(Sql.ROWS_PER_PAGE_ACTIVITY_PROFILE,userId);
-
         UserProfileResponse data = new UserProfileResponse();
-        for(Activity element : list){
-            data.activityList.add(JsonFactory.makeActivityJson(element));
-        }
+
         data.user = JsonFactory.makeUserJson(UserService.getUserById(userId));
+
+        data.opinion = new UserOpinionJson();
 
         return makeJson(data);
     }

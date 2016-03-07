@@ -16,6 +16,7 @@ public class StandardResponse {
     public String readMe;
     public int timeout=0;
     public boolean hasMessage;
+    public boolean isGuest;
     public boolean isZipped;
     public MyResponse data;
     public String zip;
@@ -24,6 +25,8 @@ public class StandardResponse {
         isZipped= Server.JSON_IS_ZIPPED;
         this.readMe = GetInformation.getReadMe(myResponse);
         this.timeout=GetInformation.getTimeout(myResponse);
+        isGuest = true;
+        this.hasMessage=hasMessage;
         //temp two type data's
         this.data=myResponse;
         if(isZipped){
