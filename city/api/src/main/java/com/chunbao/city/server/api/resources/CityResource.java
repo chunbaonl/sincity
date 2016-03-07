@@ -5,7 +5,7 @@ package com.chunbao.city.server.api.resources;
  * Description:
  */
 
-import com.chunbao.city.server.api.responses.city.GetListResponse;
+import com.chunbao.city.server.api.responses.city.ListCityResponse;
 import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
@@ -24,7 +24,7 @@ public class CityResource extends MyResource {
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
     @Path("/list")
     public String getList() {
-        GetListResponse cities = new GetListResponse();
+        ListCityResponse cities = new ListCityResponse();
         List<City> list = CityService.getList();
         for(City element : list){
             cities.cityList.add(JsonFactory.makeCityJson(element));

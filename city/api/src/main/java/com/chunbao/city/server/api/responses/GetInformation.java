@@ -3,6 +3,8 @@ package com.chunbao.city.server.api.responses;
 import com.chunbao.city.server.api.responses.activity.GetActivityByIdResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityByUserResponse;
 import com.chunbao.city.server.api.responses.activity.ListActivityResponse;
+import com.chunbao.city.server.api.responses.category.ListCategoryResponse;
+import com.chunbao.city.server.api.responses.city.ListCityResponse;
 import com.chunbao.city.server.api.responses.comment.ListCommentResponse;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
@@ -52,7 +54,13 @@ public class GetInformation {
             readMe = getReadMeActivityDetail();
         } else if (myResponse instanceof ListCommentResponse) {
             readMe = getReadMeListComment();
+        } else if (myResponse instanceof ListCategoryResponse) {
+            readMe = getReadMeListCategoryResponse();
+        } else if (myResponse instanceof ListCityResponse) {
+            readMe = getReadMeListCityResponse();
         }
+
+
         return readMe;
     }
 
@@ -77,11 +85,11 @@ public class GetInformation {
         sb.append("/system").append(StringUtil.getSeparatorDot());
         sb.append("/category/list").append(StringUtil.getSeparatorDot());
         sb.append("/city/list").append(StringUtil.getSeparatorDot());
+        sb.append("/comment/list").append(StringUtil.getSeparatorDot());
         sb.append("/activity/list").append(StringUtil.getSeparatorDot());
         sb.append("/activity/listuser").append(StringUtil.getSeparatorDot());
-        sb.append("/user/profile").append(StringUtil.getSeparatorDot());
         sb.append("/activity/detail").append(StringUtil.getSeparatorDot());
-        sb.append("/comment/list").append(StringUtil.getSeparatorDot());
+        sb.append("/user/profile").append(StringUtil.getSeparatorDot());
 
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         return sb.toString();
@@ -100,7 +108,7 @@ public class GetInformation {
         StringBuffer sb = new StringBuffer();
         sb.append("取到当前栏目内容列表:").append(StringUtil.getSeparatorDot());
         sb.append("路径: /activity/list").append(StringUtil.getSeparatorDot());
-        sb.append("输入参数: page,categoryId").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数: page,categoryId,cityId").append(StringUtil.getSeparatorDot());
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
@@ -140,4 +148,24 @@ public class GetInformation {
         sb.append("        ==========").append(StringUtil.getSeparatorDot());
         return sb.toString();
     }
+
+    private static String getReadMeListCategoryResponse() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("得到栏目列表:").append(StringUtil.getSeparatorDot());
+        sb.append("路径: /category/list").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数: 无").append(StringUtil.getSeparatorDot());
+        sb.append("        ==========").append(StringUtil.getSeparatorDot());
+        return sb.toString();
+    }
+
+    private static String getReadMeListCityResponse() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("得到城市列表:").append(StringUtil.getSeparatorDot());
+        sb.append("路径: /city/list").append(StringUtil.getSeparatorDot());
+        sb.append("输入参数: 无").append(StringUtil.getSeparatorDot());
+        sb.append("        ==========").append(StringUtil.getSeparatorDot());
+        return sb.toString();
+    }
+
+
 }
