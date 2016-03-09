@@ -63,7 +63,8 @@ public class ActivityService extends MyService {
         element.costPerDay = 100 - i;
         element.totalComments = 100 - i;
         element.totalLikes = 20 - i;
-        element.ownerName = "Micheal Jackson";
+        element.userId = "829100";
+        element.username = "Micheal Jackson";
         return element;
     }
 }

@@ -8,7 +8,8 @@ import java.util.Date;
  */
 public class Activity extends MyPo {
     //share
-    public String ownerName;
+    public String userId;
+    public String username;
     public String title;
     public String description;
     public String smallPotoId;

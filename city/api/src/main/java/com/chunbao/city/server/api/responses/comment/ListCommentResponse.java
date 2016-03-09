@@ -11,7 +11,6 @@ import java.util.List;
  * Description:
  */
 public class ListCommentResponse extends MyResponse {
-    public int totalComments;
     public List<CommentJson> list;
     public ListCommentResponse(){
         list = new ArrayList<CommentJson>();

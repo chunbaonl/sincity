@@ -40,4 +40,8 @@ public class Exceptions {
             throw new ForbiddenException(message);
         }
     }
+
+    public static void ForbiddenIf(final String message) {
+        throw new ForbiddenException(message);
+    }
 }

@@ -7,7 +7,8 @@ import java.util.Date;
  * Description:
  */
 public class ActivityJson extends MyJson {
-    public String ownerName;
+    public String userId;
+    public String username;
     public String title;
     public String description;
     public String smallPotoId;

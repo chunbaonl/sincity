@@ -14,6 +14,7 @@ import java.util.List;
  * Description:
  */
 public class LoadPageResponse extends MyResponse {
+
     public ServerInfoJson serverInfoJson;
 
     public LoadPageResponse(){

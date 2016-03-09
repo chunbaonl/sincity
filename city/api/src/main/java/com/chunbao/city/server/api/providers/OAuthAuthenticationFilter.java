@@ -97,18 +97,18 @@ public class OAuthAuthenticationFilter implements ContainerRequestFilter {
         user.latitude=StringUtil.getFloatByString(StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_LATITUDE)));
         user.appVersion=StringUtil.getFirstValueFromStringArray(request.getHeaderValues(HttpRequestConstant.PARAMETER_NAME_APP_VERSION));
 
-        //如果用户不能存在
-        //throw new WebApplicationException(401);
+        //如果用户不存在
+        //Exceptions.ForbiddenIf("You are not admin!");
         if(StringUtil.isNullOrEmpty(user.username) || StringUtil.isNullOrEmpty(user.password)){
             //for ping only, the rest denied
             if(!Server.API_PING_URL.equals(new OAuthServerRequest(containerRequest).getRequestURL().getPath())){
-                throw new ForbiddenException("Invalid consumer");
+                Exceptions.ForbiddenIf("You are not admin!");
             }
         }
         //admin check the device id
         if(user.hasRole(UserRoles.Admin)){
             if(!AdminUser.ADMIN_DEVICE_ID.equals(user.deviceId)){
-                throw new WebApplicationException(401);
+                Exceptions.ForbiddenIf("You are not admin!");
             }
         }
         //更新用户信息,经纬度,登陆时间,设备信息

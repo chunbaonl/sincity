@@ -57,7 +57,8 @@ public class JsonFactory {
         ActivityJson newJson = new ActivityJson();
         newJson.id=oldPo.id;
         newJson.updateDate=oldPo.updateDate;
-        newJson.ownerName=oldPo.ownerName;
+        newJson.userId=oldPo.userId;
+        newJson.username=oldPo.username;
         newJson.title=oldPo.title;
         newJson.description=oldPo.description;
         newJson.smallPotoId=oldPo.smallPotoId;

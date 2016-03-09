@@ -32,9 +32,9 @@ public class CommentResource extends MyResource {
     @GET
     @RolesAllowed(UserRoles.Guest)
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET })
-    @Path("/list")
-    public String getCommentList(@QueryParam("page") @DefaultValue("1") final int page,
-                                 @QueryParam("activityId") final String activityId) {
+    @Path("/listactivity")
+    public String getCommentListByActivity(@QueryParam("page") @DefaultValue("1") final int page,
+                                           @QueryParam("activityId") final String activityId) {
 
         Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
 
@@ -44,7 +44,6 @@ public class CommentResource extends MyResource {
         for(Comment element : list){
             data.list.add(JsonFactory.makeCommentJson(element));
         }
-        data.totalComments = ActivityService.getActivityById(activityId).totalComments;
         return makeJson(data);
     }
 }
