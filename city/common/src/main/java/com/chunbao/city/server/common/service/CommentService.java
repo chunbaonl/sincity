@@ -2,6 +2,7 @@ package com.chunbao.city.server.common.service;
 
 import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.db.po.Comment;
+import com.chunbao.city.server.common.db.po.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class CommentService extends MyService {
         Comment element =new Comment();
         element.message = "评论"+i;
         element.activityId = activityId;
-        element.userId = "发帖人id"+i;
+        element.user = new User();
         return element;
     }
 }

@@ -5,6 +5,7 @@ import com.chunbao.city.server.api.responses.root.PingResponse;
 import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
+import com.chunbao.city.server.common.db.po.User;
 import com.chunbao.city.server.common.service.SystemService;
 import com.chunbao.city.server.common.service.UserService;
 import org.slf4j.Logger;
@@ -29,7 +30,9 @@ public class RootResource extends MyResource {
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
     public String ping() {
         PingResponse ping= new PingResponse();
-        ping.guest = JsonFactory.makeUserJson(UserService.getGuest());
+        User guest =UserService.getGuest();
+        ping.guest = JsonFactory.makeUserJson(guest);
+        ping.guest.password = guest.password;
         return makeJson(ping);
     }
 

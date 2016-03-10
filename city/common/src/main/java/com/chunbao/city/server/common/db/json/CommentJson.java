@@ -9,7 +9,7 @@ import java.util.Date;
 public class CommentJson extends MyJson{
     //share
     public Date updateDate;
-    public String userId;
+    public UserJson user;
     public String activityId;
     public int type;
     public String message;

@@ -71,7 +71,7 @@ public class GetInformation {
         sb.append("username").append(StringUtil.getSeparatorDot());
         sb.append("password").append(StringUtil.getSeparatorDot());
         sb.append("deviceId").append(StringUtil.getSeparatorDot());
-        sb.append("deviceLanguage").append(StringUtil.getSeparatorDot());
+        sb.append("utctime").append(StringUtil.getSeparatorDot());
         sb.append("longitude").append(StringUtil.getSeparatorDot());
         sb.append("latitude").append(StringUtil.getSeparatorDot());
         sb.append("appVersion").append(StringUtil.getSeparatorDot());

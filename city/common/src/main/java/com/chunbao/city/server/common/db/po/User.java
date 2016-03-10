@@ -14,8 +14,7 @@ public class User extends MyPo implements java.security.Principal {
     public int likes;
     public int totalActivity;
     public String description;
-    public String smallPotoId;
-    public String bigPotoId;
+    public String photoUrl;
     public String email;
     public boolean hasNewMessage;
     //not share
@@ -29,6 +28,7 @@ public class User extends MyPo implements java.security.Principal {
     public String lastIp;
 
     public User(){
+        username = "guest";
         setGuestRole();
     }
 

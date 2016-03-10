@@ -19,11 +19,11 @@ public class StandardResponse {
     public boolean isGuest;
     public boolean isZipped;
     public MyResponse data;
-    public String zip;
+    public String zip=null;
 
     public StandardResponse(final boolean hasMessage,final MyResponse myResponse){
         isZipped= Server.JSON_IS_ZIPPED;
-        this.readMe = ""; //GetInformation.getReadMe(myResponse);
+        this.readMe = null; //GetInformation.getReadMe(myResponse);
         this.timeout=GetInformation.getTimeout(myResponse);
         isGuest = true;
         this.hasMessage=hasMessage;

@@ -11,8 +11,7 @@ public class UserJson extends MyJson {
     public int likes;
     public int totalActivity;
     public String description;
-    public String smallPotoId;
-    public String bigPotoId;
+    public String photoUrl;
     public String email;
     public boolean hasNewMessage;
 }

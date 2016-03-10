@@ -2,6 +2,8 @@ package com.chunbao.city.server.common.service;
 
 import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.db.po.Category;
+import com.chunbao.city.server.common.db.po.Picture;
+import com.chunbao.city.server.common.db.po.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class ActivityService extends MyService {
                                                  final String userId){
         ArrayList<Activity> list = new ArrayList<>();
         Activity element;
-        for(int i=0;i<10;i++){
+        for(int i=0;i<5;i++){
             list.add(makeActivity(i));
         }
         return list;
@@ -57,14 +59,49 @@ public class ActivityService extends MyService {
 
     private static Activity makeActivity(int i){
         Activity element =new Activity();
+        User owner = new User();
+        owner.id = "829100";
+        owner.username = "Micheal Jackson";
+        element.owner = owner;
+
         element.title = "活动"+i;
-        element.bigPotoId = "/pic-api-test/2016-03-07_08-01-12_5BFDEA90-E557-4C84-9003-F8E203BB6F3D.jpg";
         element.description = "描述" + i;
         element.costPerDay = 100 - i;
         element.totalComments = 100 - i;
         element.totalLikes = 20 - i;
-        element.userId = "829100";
-        element.username = "Micheal Jackson";
+        element.id = "" + i;
+
+        Picture picture = new Picture();
+        picture.position = i++;
+        picture.url = "/pic-api-test/2016-03-07_08-01-12_5BFDEA90-E557-4C84-9003-F8E203BB6F3D.jpg";
+        picture.activityId = element.id;
+        element.mPictureList.add(picture);
+        picture = new Picture();
+        picture.position = i++;
+        picture.url = "/pic-api-test/2016-03-07_08-01-12_5BFDEA90-E557-4C84-9003-F8E203BB6F3D.jpg";
+        picture.activityId = element.id;
+        element.mPictureList.add(picture);
+        picture = new Picture();
+        picture.position = i++;
+        picture.url = "/pic-api-test/2016-03-07_08-01-12_5BFDEA90-E557-4C84-9003-F8E203BB6F3D.jpg";
+        picture.activityId = element.id;
+        element.mPictureList.add(picture);
+
+        Category c =new Category();
+        c.nameCn ="栏目1";
+        c.position = 1;
+        c.photoId = "/pic-api-test/download.jpeg";
+        element.mCategoryList.add(c);
+        c =new Category();
+        c.nameCn ="栏目2";
+        c.position = 2;
+        c.photoId = "/pic-api-test/button-icon-go-17212255.jpg";
+        element.mCategoryList.add(c);
+        c =new Category();
+        c.nameCn ="栏目3";
+        c.position = 3;
+        c.photoId = "/pic-api-test/icon-go-10592162.jpg";
+        element.mCategoryList.add(c);
         return element;
     }
 }

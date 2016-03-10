@@ -19,10 +19,11 @@ public class UUIDUtil {
     }
 
     public static boolean isValidId(String id){
-        if(id==null || id.length()!=36){
-            return false;
-        }
-        return true;
+        return false;
+//        if(id==null || id.length()!=36){
+//            return false;
+//        }
+//        return true;
     }
 
     /**

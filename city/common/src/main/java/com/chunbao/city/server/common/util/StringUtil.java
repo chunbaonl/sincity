@@ -1,6 +1,7 @@
 package com.chunbao.city.server.common.util;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +22,16 @@ import java.util.zip.GZIPOutputStream;
 public class StringUtil {
 
     private static final Logger mLogger = LoggerFactory.getLogger(StringUtil.class);
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper;
     public final static String CHARSET = "UTF-8";
+
+    private static ObjectMapper getObjectMapper(){
+        if(mapper ==null){
+            mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        }
+        return mapper;
+    }
 
     public static String compress(String str) throws Exception {
         if (str == null || str.length() == 0) {
@@ -70,7 +79,7 @@ public class StringUtil {
         String json = "";
 
         try {
-            json = mapper.writeValueAsString(o);
+            json = getObjectMapper().writeValueAsString(o);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +124,7 @@ public class StringUtil {
     public static <T> T readAsObjectOf(Class<T> clazz, String value){
         T o=null;
         try {
-            o = mapper.readValue(value, clazz);
+            o = getObjectMapper().readValue(value, clazz);
         } catch (Exception e) {
             mLogger.warn("{}, {}", e.getMessage(), e.fillInStackTrace());
         }
