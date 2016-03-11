@@ -43,7 +43,7 @@ public class ActivityResource extends MyResource {
                                   @QueryParam("categoryId") final String categoryId,
                                   @QueryParam("cityId") final String cityId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(categoryId),"Invalid categoryId="+categoryId);
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(categoryId),"Invalid categoryId="+categoryId);
 
         List<Activity> list = ActivityService.getActivityList(page,categoryId,cityId);
 
@@ -64,7 +64,7 @@ public class ActivityResource extends MyResource {
     public String getActivityListByUser(@QueryParam("page") @DefaultValue("1") final int page,
                                   @QueryParam("userId") final String userId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
 
         List<Activity> list = ActivityService.getActivityListByUser(page,userId);
 
@@ -84,7 +84,7 @@ public class ActivityResource extends MyResource {
     @Path("/detail")
     public String getCommentById(@QueryParam("activityId") final String activityId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
 
         GetActivityByIdResponse data = new GetActivityByIdResponse();
 

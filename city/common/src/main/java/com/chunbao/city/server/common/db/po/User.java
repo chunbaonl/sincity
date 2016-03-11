@@ -7,6 +7,9 @@ import com.chunbao.city.server.common.constant.UserRoles;
  * Description:
  */
 public class User extends MyPo implements java.security.Principal {
+
+    private static final long serialVersionUID = 7863262235394607245L;
+
     //share
     public String username;
     public String password;

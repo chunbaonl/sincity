@@ -24,8 +24,8 @@ public class ActivityJson extends MyJson {
     public int totalLikes;
     public int totalAttenders;
     public Date updateDate;
-    public float longitude;
-    public float latitude;
+    public String longitude;
+    public String latitude;
     public String cityId;
     public List<CategoryJson> mCategoryJsonList;
     public List<PictureJson> mPictureJsonList;

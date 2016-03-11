@@ -1,7 +1,15 @@
 package com.chunbao.city.server.common.service;
 
 import com.chunbao.city.server.common.constant.UserConstant;
+import com.chunbao.city.server.common.db.dao.UserDao;
+import com.chunbao.city.server.common.db.helper.MyBatisConnectionFactory;
 import com.chunbao.city.server.common.db.po.User;
+import com.chunbao.city.server.common.exception.ServiceException;
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import java.util.List;
 
 /**
  * Created by anchunyang on 06/03/16.
@@ -13,12 +21,8 @@ public class UserService extends MyService {
      * 读取guest用户信息
      * @return
      */
-    public static User getGuest(){
-        User guest = new User();
-        guest.setGuestRole();
-        guest.username= UserConstant.GUEST_USERNAME;
-        guest.password= UserConstant.GUEST_PASSWORD;
-        return guest;
+    public static User getGuest() throws ServiceException {
+        return getUserById(UserConstant.GUEST_USERID);
     }
 
 
@@ -26,11 +30,15 @@ public class UserService extends MyService {
      * 读取guest用户信息
      * @return
      */
-    public static User getUserById(final String userId){
-        User user = new User();
-        user.setUserRole();
-        user.username= UserConstant.GUEST_USERNAME;
-        user.password= UserConstant.GUEST_PASSWORD;
-        return user;
+    public static User getUserById(final String userId) throws ServiceException {
+
+        SqlSessionFactory sqlSessionFactory = MyBatisConnectionFactory.getSqlSessionFactory();
+        try (SqlSession session = sqlSessionFactory.openSession(MyBatisConnectionFactory.NOT_AUTO_COMMIT)) {
+            UserDao dao = session.getMapper(UserDao.class);
+            User guest = dao.getUserById(userId);
+            return guest;
+        } catch (Exception e) {
+            throw new ServiceException("Can not read user."+e.getMessage());
+        }
     }
 }

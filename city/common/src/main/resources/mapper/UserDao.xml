@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chunbao.city.server.common.db.dao.UserDao">
+
+    <!--  <cache/>  -->
+    <select id="getUserById"
+            resultType="com.chunbao.city.server.common.db.po.User"
+            parameterType="string"
+            resultMap="UserResultMap">
+        SELECT *
+        FROM cb_user
+        WHERE
+        id = #{userId}
+    </select>
+
+    <resultMap type="com.chunbao.city.server.common.db.po.User" id="UserResultMap">
+        <result property="id" column="id"/>
+        <result property="updateDate" column="date_updated"/>
+        <result property="createDate" column="date_created"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="isTask" column="is_task"/>
+        <result property="username" column="username"/>
+
+        <result property="password" column="password"/>
+        <result property="wallet" column="wallet"/>
+        <result property="likes" column="likes"/>
+        <result property="totalActivity" column="total_activity"/>
+
+        <result property="description" column="description"/>
+        <result property="photoUrl" column="photo_url"/>
+        <result property="email" column="email"/>
+        <result property="hasNewMessage" column="has_new_message"/>
+        <result property="deviceId" column="device_id"/>
+
+        <result property="deviceLanguage" column="device_language"/>
+        <result property="longitude" column="location_lo"/>
+        <result property="latitude" column="location_la"/>
+
+        <result property="appVersion" column="app_version"/>
+        <result property="role" column="role"/>
+        <result property="isActive" column="is_active"/>
+        <result property="lastIp" column="last_ip"/>
+
+    </resultMap>
+</mapper>

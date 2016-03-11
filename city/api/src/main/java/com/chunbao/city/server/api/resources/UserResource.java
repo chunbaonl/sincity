@@ -13,6 +13,7 @@ import com.chunbao.city.server.common.db.json.UserJson;
 import com.chunbao.city.server.common.db.json.UserOpinionJson;
 import com.chunbao.city.server.common.db.po.Activity;
 import com.chunbao.city.server.common.db.po.User;
+import com.chunbao.city.server.common.exception.ServiceException;
 import com.chunbao.city.server.common.service.ActivityService;
 import com.chunbao.city.server.common.service.UserService;
 import com.chunbao.city.server.common.util.StringUtil;
@@ -20,6 +21,7 @@ import com.chunbao.city.server.common.util.UUIDUtil;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,15 +44,17 @@ public class UserResource extends MyResource {
     @Path("/get")
     public String getUser(@QueryParam("userId") final String userId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
-
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(userId),"Invalid userId="+userId);
         UserProfileResponse data = new UserProfileResponse();
-
-        data.user = JsonFactory.makeUserJson(UserService.getUserById(userId));
-
-        data.opinion = new UserOpinionJson();
-
-        return makeJson(data);
+        try {
+            User user = UserService.getUserById(userId);
+            data.user = JsonFactory.makeUserJson(user,JsonFactory.INFO_BASIC);
+            data.opinion = new UserOpinionJson();
+            return makeJson(data);
+        } catch (Exception e) {
+            Exceptions.Forbidden("User does not exist.");
+        }
+        return null;
     }
 
     @GET
@@ -60,13 +64,13 @@ public class UserResource extends MyResource {
     public String getUserListByActivity(@QueryParam("page") @DefaultValue("1") final int page,
                                         @QueryParam("activityId") final String activityId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid userId="+activityId);
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(activityId),"Invalid userId="+activityId);
 
         UserListResponse data = new UserListResponse();
 
         List<UserJson> userList = new ArrayList<UserJson>();
-        userList.add(JsonFactory.makeUserJson(new User()));
-        userList.add(JsonFactory.makeUserJson(new User()));
+        userList.add(JsonFactory.makeUserJson(new User(),JsonFactory.INFO_BASIC));
+        userList.add(JsonFactory.makeUserJson(new User(),JsonFactory.INFO_BASIC));
         data.userList = userList;
 
         return makeJson(data);
@@ -78,7 +82,7 @@ public class UserResource extends MyResource {
     @Path("/language")
     public String setLanguage(@QueryParam("language") final String language) {
 
-        Exceptions.BadRequestIf(StringUtil.isNullOrEmpty(language),"Invalid language="+language);
+        Exceptions.ForbiddenIf(StringUtil.isNullOrEmpty(language),"Invalid language="+language);
 
         MessageResponse data = new MessageResponse(MessageByLanguage.getOK(getUser().deviceLanguage));
 

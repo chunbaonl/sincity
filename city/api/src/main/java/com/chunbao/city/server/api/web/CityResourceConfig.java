@@ -17,25 +17,23 @@ import java.util.logging.Logger;
 @ApplicationPath("/")
 public class CityResourceConfig extends ResourceConfig {
 
-    private static final boolean ENABLE_REQUEST_RESPONSE_LOGGING = false;
-
     public CityResourceConfig() {
-        // DEBUG: Request & Response logging
-        // ***NEVER*** enable on production!
-        if (ENABLE_REQUEST_RESPONSE_LOGGING) {
-
-            // Enable LoggingFilter & output entity.
-            registerInstances(new LoggingFilter(Logger.getLogger(CityResourceConfig.class.getName()), true));
-        }
-
+        //Get a set of root resource, provider and feature classes.
+        //provider OAuthAuthenticationFilter
         packages("com.chunbao.city.server.api.providers");
+        //resource
         packages("com.chunbao.city.server.api.resources");
 
+        //json
         register(JacksonFeature.class);
+        //upload file
         register(MultiPartFeature.class);
+        //oauth
         register(OAuth1SignatureFeature.class);
+        //roles
         register(RolesAllowedDynamicFeature.class);
 
+        //
         setApplicationName("api");
     }
 }

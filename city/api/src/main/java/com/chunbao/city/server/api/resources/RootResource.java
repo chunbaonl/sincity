@@ -1,11 +1,13 @@
 package com.chunbao.city.server.api.resources;
 
+import com.chunbao.city.server.api.providers.Exceptions;
 import com.chunbao.city.server.api.responses.root.LoadPageResponse;
 import com.chunbao.city.server.api.responses.root.PingResponse;
 import com.chunbao.city.server.common.constant.HttpRequestConstant;
 import com.chunbao.city.server.common.constant.UserRoles;
 import com.chunbao.city.server.common.db.json.JsonFactory;
 import com.chunbao.city.server.common.db.po.User;
+import com.chunbao.city.server.common.exception.ServiceException;
 import com.chunbao.city.server.common.service.SystemService;
 import com.chunbao.city.server.common.service.UserService;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,11 +32,16 @@ public class RootResource extends MyResource {
     @PermitAll
     @Produces({ HttpRequestConstant.CHINESE_JSON_CHARSET})
     public String ping() {
-        PingResponse ping= new PingResponse();
-        User guest =UserService.getGuest();
-        ping.guest = JsonFactory.makeUserJson(guest);
-        ping.guest.password = guest.password;
-        return makeJson(ping);
+        try {
+            PingResponse ping= new PingResponse();
+            User guest = null;
+            guest = UserService.getGuest();
+            ping.guest = JsonFactory.makeUserJson(guest,JsonFactory.INFO_FULL);
+            ping.guest.password = guest.password;
+            return makeJson(ping);
+        } catch (ServiceException e) {
+            throw new ForbiddenException(e.getMessage());
+        }
     }
 
     //use log in user to get the list.

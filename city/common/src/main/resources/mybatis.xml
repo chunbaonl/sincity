@@ -4,69 +4,29 @@
     <properties resource="database.properties"/>
 
     <settings>
+        <setting name="cacheEnabled" value="true"/>
         <setting name="defaultExecutorType" value="REUSE"/>
-        <setting name="localCacheScope" value="STATEMENT"/>
-
+        <setting name="localCacheScope" value="SESSION"/>
     </settings>
 
-
     <typeAliases>
-
         <!-- Common models -->
-
     </typeAliases>
 
-    <environments default="local-dev">
+    <environments default="production">
         <environment id="production">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="${prod-database.url}"/>
-                <property name="username" value="${prod-database.username}"/>
-                <property name="password" value="${prod-database.password}"/>
-            </dataSource>
-        </environment>
-        <environment id="development">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="${dev-database.url}"/>
-                <property name="username" value="${dev-database.username}"/>
-                <property name="password" value="${dev-database.password}"/>
-            </dataSource>
-        </environment>
-        <environment id="acceptance">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="${prod-database.url}"/>
-                <property name="username" value="${prod-database.username}"/>
-                <property name="password" value="${prod-database.password}"/>
-            </dataSource>
-        </environment>
-
-        <environment id="local-dev">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="${local-database.url}"/>
-                <property name="username" value="${dev-database.username}"/>
-                <property name="password" value="${dev-database.password}"/>
-            </dataSource>
-        </environment>
-
-        <environment id="local-prod">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="${local-prod-database.url}"/>
-                <property name="username" value="${prod-database.username}"/>
-                <property name="password" value="${prod-database.password}"/>
+                <property name="url" value="${database.url}"/>
+                <property name="username" value="${database.username}"/>
+                <property name="password" value="${database.password}"/>
             </dataSource>
         </environment>
     </environments>
 
     <mappers>
+        <mapper resource="mapper/UserDao.xml"/>
     </mappers>
 
 </configuration>

@@ -36,7 +36,7 @@ public class CommentResource extends MyResource {
     public String getCommentListByActivity(@QueryParam("page") @DefaultValue("1") final int page,
                                            @QueryParam("activityId") final String activityId) {
 
-        Exceptions.BadRequestIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
+        Exceptions.ForbiddenIf(UUIDUtil.isValidId(activityId),"Invalid activityId="+activityId);
 
         List<Comment> list = CommentService.getCommentList(page,activityId);
 

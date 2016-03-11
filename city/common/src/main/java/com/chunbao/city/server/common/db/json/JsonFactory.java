@@ -8,18 +8,26 @@ import com.chunbao.city.server.common.db.po.*;
  */
 public class JsonFactory {
 
-    public static UserJson makeUserJson(User oldPo){
+    public final static int INFO_SIMPLE = 0;
+    public final static int INFO_BASIC = 1;
+    public final static int INFO_FULL = 2;
+    public static UserJson makeUserJson(User oldPo, final int level){
         UserJson newJson = new UserJson();
         newJson.id=oldPo.id;
         newJson.username=oldPo.username;
-        //newJson.password=oldPo.password;
-        newJson.wallet=oldPo.wallet;
-        newJson.likes=oldPo.likes;
-        newJson.totalActivity=oldPo.totalActivity;
-        newJson.description=oldPo.description;
         newJson.photoUrl=oldPo.photoUrl;
-        newJson.email=oldPo.email;
-        newJson.hasNewMessage=oldPo.hasNewMessage;
+        if(level > INFO_SIMPLE){
+            //
+            newJson.wallet=oldPo.wallet;
+            newJson.likes=oldPo.likes;
+            newJson.totalActivity=oldPo.totalActivity;
+            newJson.description=oldPo.description;
+            newJson.hasNewMessage=oldPo.hasNewMessage;
+            if(level > INFO_BASIC){
+                newJson.email=oldPo.email;
+                newJson.password=oldPo.password;
+            }
+        }
         return newJson;
     }
 
@@ -32,7 +40,6 @@ public class JsonFactory {
         newJson.description=oldPo.description;
         newJson.position=oldPo.position;
         newJson.photoId=oldPo.photoId;
-        newJson.nameCn=oldPo.nameCn;
         return newJson;
     }
 
@@ -48,7 +55,6 @@ public class JsonFactory {
         ActivityJson newJson = new ActivityJson();
         newJson.id=oldPo.id;
         newJson.updateDate=oldPo.updateDate;
-        newJson.owner=makeUserJson(oldPo.owner);
         newJson.title=oldPo.title;
         newJson.description=oldPo.description;
         newJson.startDate=oldPo.startDate;
@@ -58,8 +64,6 @@ public class JsonFactory {
         newJson.totalComments=oldPo.totalComments;
         newJson.totalLikes=oldPo.totalLikes;
         newJson.totalAttenders =oldPo.totalAttenders;
-        newJson.longitude=oldPo.longitude;
-        newJson.latitude=oldPo.latitude;
         newJson.cityId=oldPo.cityId;
         for(Category c : oldPo.mCategoryList){
             newJson.mCategoryJsonList.add(makeCategoryJson(c));
@@ -67,6 +71,9 @@ public class JsonFactory {
         for(Picture c : oldPo.mPictureList){
             newJson.mPictureJsonList.add(makePictureJson(c));
         }
+        newJson.owner=makeUserJson(oldPo.owner,INFO_SIMPLE);
+        //newJson.longitude=oldPo.longitude;
+        //newJson.latitude=oldPo.latitude;
         return newJson;
     }
 
@@ -74,7 +81,7 @@ public class JsonFactory {
         CommentJson newJson = new CommentJson();
         newJson.id=oldPo.id;
         newJson.updateDate=oldPo.updateDate;
-        newJson.user=makeUserJson(oldPo.user);
+        newJson.user=makeUserJson(oldPo.user,INFO_SIMPLE);
         newJson.activityId=oldPo.activityId;
         newJson.type=oldPo.type;
         newJson.message=oldPo.message;

@@ -20,8 +20,8 @@ public class Activity extends MyPo {
     public int totalComments;
     public int totalLikes;
     public int totalAttenders;
-    public float longitude;
-    public float latitude;
+    public String longitude;
+    public String latitude;
     public String cityId;
     public List<Category> mCategoryList;
     public List<Picture> mPictureList;

@@ -22,16 +22,8 @@ import java.util.zip.GZIPOutputStream;
 public class StringUtil {
 
     private static final Logger mLogger = LoggerFactory.getLogger(StringUtil.class);
-    private static ObjectMapper mapper;
-    public final static String CHARSET = "UTF-8";
 
-    private static ObjectMapper getObjectMapper(){
-        if(mapper ==null){
-            mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        }
-        return mapper;
-    }
+    public final static String CHARSET = "UTF-8";
 
     public static String compress(String str) throws Exception {
         if (str == null || str.length() == 0) {
@@ -79,7 +71,7 @@ public class StringUtil {
         String json = "";
 
         try {
-            json = getObjectMapper().writeValueAsString(o);
+            json = ObjectMapperContextResolver.getMapper().writeValueAsString(o);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,7 +116,7 @@ public class StringUtil {
     public static <T> T readAsObjectOf(Class<T> clazz, String value){
         T o=null;
         try {
-            o = getObjectMapper().readValue(value, clazz);
+            o = ObjectMapperContextResolver.getMapper().readValue(value, clazz);
         } catch (Exception e) {
             mLogger.warn("{}, {}", e.getMessage(), e.fillInStackTrace());
         }

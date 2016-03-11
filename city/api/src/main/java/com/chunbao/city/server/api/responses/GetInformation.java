@@ -60,7 +60,6 @@ public class GetInformation {
             readMe = getReadMeListCityResponse();
         }
 
-
         return readMe;
     }
 

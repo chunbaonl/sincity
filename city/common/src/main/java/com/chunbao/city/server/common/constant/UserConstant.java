@@ -5,6 +5,7 @@ package com.chunbao.city.server.common.constant;
  * Description:
  */
 public class UserConstant {
+    public static String GUEST_USERID = "4BFDEA90-E557-4C84-9003-F8E203BB6F3D";
     public static String GUEST_USERNAME = "Guest";
-    public static String GUEST_PASSWORD = "084E0343A0486FF05530DF6C705C8BB4";//默认guest,md5,大写
+    public static String GUEST_PASSWORD = "ADB831A7FDD83DD1E2A309CE7591DFF8";//默认Guest,md5,大写
 }
